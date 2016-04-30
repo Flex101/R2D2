@@ -1,7 +1,6 @@
 #include "Logging.h"
 
 #include <iostream>
-#include <stdarg.h>
 #include <iomanip>
 
 using namespace R2D2;

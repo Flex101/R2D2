@@ -1,6 +1,7 @@
 #ifndef LOGGING_H
 #define LOGGING_H
 
+#include <stdarg.h>
 #include <string>
 
 namespace R2D2 {
