@@ -22,7 +22,7 @@ std::string File::workingDirectory()
 std::vector<std::string> File::listFiles(std::string directory, bool recursive, std::string extension)
 {
 	std::vector<std::string> list;
-	listFiles(list, directory, recursive);
+	listFiles(list, directory, recursive, extension);
 	return list;
 }
 
