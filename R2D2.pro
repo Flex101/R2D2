@@ -42,3 +42,7 @@ OTHER_FILES += \
     Resources/Audio/Negative/*.wav \
 
 LIBS += -lasound
+
+resources.files = $$PWD/Resources/*
+resources.path = $$OUT_PWD/Resources
+INSTALLS += resources
