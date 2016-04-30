@@ -1,5 +1,6 @@
 #include "Logging.h"
 
+#include <stdio.h>
 #include <iostream>
 #include <iomanip>
 
@@ -81,13 +82,14 @@ void Logging::log(LogType type, const std::string source, const std::string fmt,
 
 std::string Logging::formatString(const std::string fmt, va_list args)
 {
-	int size = ((int)fmt.size()) * 2 + 50;   // Use a rubric appropriate for your code
+	int size = ((int)fmt.size()) * 2 + 100;   // Use a rubric appropriate for your code
 	std::string str;
 
 	while (1)
 	{     // Maximum two passes on a POSIX system...
 		str.resize(size);
-		int n = vsnprintf((char *)str.data(), size, fmt.c_str(), args);
+		int n = vsprintf((char *)str.data(), fmt.c_str(), args);
+		//int n = vsnprintf(, size, fmt.c_str(), args);
 
 		if (n > -1 && n < size) // Everything worked
 		{

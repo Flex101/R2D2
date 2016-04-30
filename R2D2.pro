@@ -1,5 +1,5 @@
 TEMPLATE = app
-CONFIG += console c++11
+CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 
@@ -20,7 +20,8 @@ HEADERS += \
     Devices/Device.h \
     Tools/WavFile.h \
     Tools/AudioLibrary.h \
-    Tools/StringEx.h
+    Tools/StringEx.h \
+    Tools/CommonDefs.h \
 
 SOURCES += \
     main.cpp \

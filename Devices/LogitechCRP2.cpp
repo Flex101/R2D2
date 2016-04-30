@@ -1,5 +1,6 @@
 #include "LogitechCRP2.h"
 
+#include <stdlib.h>			// for malloc() and free()
 #include <unistd.h>			// for write()
 #include <linux/input.h>	// for ff_effect
 #include <string.h>			// for memset

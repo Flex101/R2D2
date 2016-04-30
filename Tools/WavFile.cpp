@@ -1,5 +1,6 @@
 #include "WavFile.h"
 
+#include <stdio.h>		// for fopen(), fclose(), fread()
 #include <string.h>		// for memset()
 #include "Logging.h"
 

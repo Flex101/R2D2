@@ -1,6 +1,7 @@
 #ifndef WAVFILE_H
 #define WAVFILE_H
 
+#include "CommonDefs.h"
 #include <string>
 
 namespace R2D2 {

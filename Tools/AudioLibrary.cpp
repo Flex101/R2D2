@@ -1,5 +1,6 @@
 #include "AudioLibrary.h"
 
+#include <stdlib.h>		// for rand()
 #include "File.h"
 #include "Logging.h"
 

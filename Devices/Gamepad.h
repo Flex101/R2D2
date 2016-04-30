@@ -2,6 +2,7 @@
 #define GAMEPAD_H
 
 #include "Device.h"
+#include "CommonDefs.h"
 #include <string>
 #include <vector>
 

@@ -28,7 +28,7 @@ std::vector<std::string> File::listFiles(std::string directory, bool recursive, 
 
 void File::listFiles(std::vector<std::string>& list, std::string directory, bool recursive, std::string extension)
 {
-	if (StringEx::endsWith(directory, "/")) directory.pop_back();
+	if (StringEx::endsWith(directory, "/")) directory.erase(directory.size()-1, 1);
 
 	DIR* directoryPtr = opendir(directory.c_str());
 	if (directoryPtr == NULL) return;
