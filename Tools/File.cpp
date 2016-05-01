@@ -14,6 +14,17 @@ bool File::fileExists(std::string path)
 	return (stat (path.c_str(), &buffer) == 0);
 }
 
+std::string File::applicationDirectory()
+{
+	char buffer[PATH_MAX];
+	if (readlink("/proc/self/exe", (char*)&buffer, PATH_MAX) == 0) return "";
+
+	std::string path(buffer);
+	path.erase(path.find_last_of('/'), path.length() - path.find_last_of('/'));
+
+	return path;
+}
+
 std::string File::workingDirectory()
 {
 	return getcwd(NULL, 0);

@@ -54,9 +54,9 @@ void R2CS::initialise()
 {
 	Logging::log(LOG_INFO, "CS", "Initialising...");
 
-	positiveSounds->readFromDir(File::workingDirectory() + "/Resources/Audio/Positive", true);
-	neutralSounds->readFromDir(File::workingDirectory() + "/Resources/Audio/Neutral", true);
-	negativeSounds->readFromDir(File::workingDirectory() + "/Resources/Audio/Negative", true);
+	positiveSounds->readFromDir(File::applicationDirectory() + "/Resources/Audio/Positive", true);
+	neutralSounds->readFromDir(File::applicationDirectory() + "/Resources/Audio/Neutral", true);
+	negativeSounds->readFromDir(File::applicationDirectory() + "/Resources/Audio/Negative", true);
 }
 
 void R2CS::start()

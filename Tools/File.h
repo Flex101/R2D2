@@ -10,6 +10,7 @@ class File
 {
 public:
 	static bool fileExists(std::string path);
+	static std::string applicationDirectory();
 	static std::string workingDirectory();
 
 	static std::vector<std::string> listFiles(std::string directory, bool recursive = false, std::string extension = "");
