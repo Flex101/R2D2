@@ -21,9 +21,12 @@ LogitechCRP2::~LogitechCRP2()
 
 void LogitechCRP2::disconnect()
 {
-	vibrateStrong(0);
-	vibrateWeak(0);
-	writeVibrateEffect();
+	if (connected)
+	{
+		vibrateStrong(0);
+		vibrateWeak(0);
+		writeVibrateEffect();
+	}
 
 	Gamepad::disconnect();
 }
