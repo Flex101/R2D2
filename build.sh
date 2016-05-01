@@ -4,7 +4,7 @@ rm -r build
 mkdir build
 cd build
 
-qmake ../R2D2.pro -spec linux-g++-32
+qmake ../R2D2.pro -r -spec linux-g++
 
 make
 #make install
