@@ -2,6 +2,8 @@ TEMPLATE = app
 CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
+QMAKE_CXXFLAGS += -m64
+QMAKE_LDFLAGS += -m64
 
 DEFINES += NO_DEBUG
 
