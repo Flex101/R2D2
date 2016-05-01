@@ -24,9 +24,9 @@ bool WavFile::loadFile(std::string filename)
 	filestream = fopen(filename.c_str(), "rb");
 	fileLoaded = (filestream != NULL);
 
-	if (fileLoaded) readWavInfo();
+	if (!fileLoaded) return false;
 
-	return fileLoaded;
+	return readWavInfo();
 }
 
 void WavFile::close()
@@ -51,22 +51,22 @@ unsigned int WavFile::streamFrames(short* buffer, unsigned int nFrames)
 	return count;
 }
 
-void WavFile::readWavInfo()
+bool WavFile::readWavInfo()
 {
-	fread(&info.chunkID, sizeof(char), 4 , filestream);
-	fread(&info.chunkSize, sizeof(uint32_t), 1, filestream);
-	fread(&info.format, sizeof(char), 4, filestream);
-	fread(&info.subChunk1ID, sizeof(char), 4, filestream);
-	fread(&info.subChunk1Size, sizeof(uint32_t), 1, filestream);
-	fread(&info.audioFormat, sizeof(uint16_t), 1, filestream);
-	fread(&info.numChannels, sizeof(uint16_t), 1, filestream);
-	fread(&info.sampleRate, sizeof(uint32_t), 1, filestream);
-	fread(&info.byteRate, sizeof(uint32_t), 1, filestream);
-	fread(&info.blockAlign, sizeof(uint16_t), 1, filestream);
-	fread(&info.bitsPerSample, sizeof(uint16_t), 1, filestream);
+	if (fread(&info.chunkID, sizeof(char), 4 , filestream) < 4) return false;
+	if (fread(&info.chunkSize, sizeof(uint32_t), 1, filestream) < 1) return false;
+	if (fread(&info.format, sizeof(char), 4, filestream) < 4) return false;
+	if (fread(&info.subChunk1ID, sizeof(char), 4, filestream) < 4) return false;
+	if (fread(&info.subChunk1Size, sizeof(uint32_t), 1, filestream) < 1) return false;
+	if (fread(&info.audioFormat, sizeof(uint16_t), 1, filestream) < 1) return false;
+	if (fread(&info.numChannels, sizeof(uint16_t), 1, filestream) < 1) return false;
+	if (fread(&info.sampleRate, sizeof(uint32_t), 1, filestream) < 1) return false;
+	if (fread(&info.byteRate, sizeof(uint32_t), 1, filestream) < 1) return false;
+	if (fread(&info.blockAlign, sizeof(uint16_t), 1, filestream) < 1) return false;
+	if (fread(&info.bitsPerSample, sizeof(uint16_t), 1, filestream) < 1) return false;
 
 	char dataStart[4];
-	fread(&dataStart, sizeof(char), 4 , filestream);
+	if (fread(&dataStart, sizeof(char), 4 , filestream) < 4) return false;
 
 	Logging::log(LOG_DEBUG, "WAVFILE", "chunkID: %s", std::string((char*)&info.chunkID).substr(0, 4).c_str());
 	Logging::log(LOG_DEBUG, "WAVFILE", "chunkSize: %d", info.chunkSize);
@@ -80,5 +80,7 @@ void WavFile::readWavInfo()
 	Logging::log(LOG_DEBUG, "WAVFILE", "blockAlign: %d", info.blockAlign);
 	Logging::log(LOG_DEBUG, "WAVFILE", "bitsPerSample: %d", info.bitsPerSample);
 	Logging::log(LOG_DEBUG, "WAVFILE", "dataStart: %s", &dataStart);
+
+	return true;
 }
 

@@ -36,7 +36,7 @@ public:
 	bool isFileLoaded() const { return fileLoaded; }
 
 protected:
-	void readWavInfo();
+	bool readWavInfo();
 
 protected:
 	bool fileLoaded;
