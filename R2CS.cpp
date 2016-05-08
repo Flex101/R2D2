@@ -3,6 +3,8 @@
 #include "LogitechCRP2.h"
 #include "Audio.h"
 #include "AudioLibrary.h"
+#include "SerialDeviceLibrary.h"
+#include "FootDrive.h"
 #include "File.h"
 #include "RealTime.h"
 #include "Logging.h"
@@ -18,11 +20,15 @@ R2CS::R2CS()
 	devices.push_back(gamepad);
 	devices.push_back(audio);
 
-	positiveSounds = new AudioLibrary();
-	neutralSounds = new AudioLibrary();
-	negativeSounds = new AudioLibrary();
+	leftFoot = new FootDrive("LFOOT");
+	rightFoot = new FootDrive("RFOOT");
+
+	devices.push_back(leftFoot);
+	devices.push_back(rightFoot);
 
 	stopRequest = false;
+	goodStartupWav =File::applicationDirectory() + "/Resources/Audio/Positive/I Agree.wav";
+	badStartupWav = File::applicationDirectory() + "/Resources/Audio/Negative/Weeoooowww!.wav";
 }
 
 R2CS::~R2CS()
@@ -39,6 +45,10 @@ void R2CS::connectToDevices()
 {
 	Logging::log(LOG_INFO, "CS", "Connecting to devices...");
 
+	serialDevices.initialise();
+	leftFoot->initialise(serialDevices);
+	rightFoot->initialise(serialDevices);
+
 	bool connectedToAll = true;
 
 	for (unsigned int i = 0; i < devices.size(); i++)
@@ -54,13 +64,25 @@ void R2CS::initialise()
 {
 	Logging::log(LOG_INFO, "CS", "Initialising...");
 
-	positiveSounds->readFromDir(File::applicationDirectory() + "/Resources/Audio/Positive", true);
-	neutralSounds->readFromDir(File::applicationDirectory() + "/Resources/Audio/Neutral", true);
-	negativeSounds->readFromDir(File::applicationDirectory() + "/Resources/Audio/Negative", true);
+	positiveSounds.readFromDir(File::applicationDirectory() + "/Resources/Audio/Positive", true);
+	neutralSounds.readFromDir(File::applicationDirectory() + "/Resources/Audio/Neutral", true);
+	negativeSounds.readFromDir(File::applicationDirectory() + "/Resources/Audio/Negative", true);
 }
 
 void R2CS::start()
 {
+	if (!leftFoot->isConnected() || !rightFoot->isConnected())
+	{
+		Logging::log(LOG_WARN, "CS", "Drive system failure - IMMOBILISED");
+		leftFoot->disconnect();
+		rightFoot->disconnect();
+		audio->loadWavFile(badStartupWav);
+	}
+	else
+	{
+		audio->loadWavFile(goodStartupWav);
+	}
+
 	Logging::log(LOG_INFO, "CS", "Control loop started...");
 
 	while (!stopRequest)
@@ -81,9 +103,9 @@ void R2CS::start()
 
 			if (audio->isConnected() && !audio->isPlaying())
 			{
-				if (gamepad->dPadDown()) audio->loadWavFile(negativeSounds->random());
-				if (gamepad->dPadLeft()) audio->loadWavFile(neutralSounds->random());
-				if (gamepad->dPadUp()) audio->loadWavFile(positiveSounds->random());
+				if (gamepad->dPadDown()) audio->loadWavFile(negativeSounds.random());
+				if (gamepad->dPadLeft()) audio->loadWavFile(neutralSounds.random());
+				if (gamepad->dPadUp()) audio->loadWavFile(positiveSounds.random());
 			}
 		}
 

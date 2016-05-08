@@ -4,14 +4,13 @@
 #include <vector>
 #include <string>
 
-namespace R2D2
-{
+namespace R2D2 {
 
 class AudioLibrary
 {
 public:
-	explicit AudioLibrary();
-	virtual ~AudioLibrary();
+	explicit AudioLibrary() {}
+	virtual ~AudioLibrary() {}
 
 	void readFromDir(std::string dir, bool recursive = false);
 

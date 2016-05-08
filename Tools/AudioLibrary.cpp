@@ -6,16 +6,6 @@
 
 using namespace R2D2;
 
-AudioLibrary::AudioLibrary()
-{
-
-}
-
-AudioLibrary::~AudioLibrary()
-{
-
-}
-
 void AudioLibrary::readFromDir(std::string dir, bool recursive)
 {
 	Logging::log(LOG_INFO, "AUDIOLIB" ,"Populating audio from: %s...", dir.c_str());

@@ -39,6 +39,16 @@ std::vector<std::string> File::listFiles(std::string directory, bool recursive, 
 
 void File::listFiles(std::vector<std::string>& list, std::string directory, bool recursive, std::string extension)
 {
+	listContents(DT_REG, list, directory, recursive, extension);
+}
+
+void File::listLinks(std::vector<std::string>& list, std::string directory, bool recursive)
+{
+	listContents(DT_LNK, list, directory, recursive);
+}
+
+void File::listContents(unsigned int type, std::vector<std::string>& list, std::string directory, bool recursive, std::string extension)
+{
 	if (StringEx::endsWith(directory, "/")) directory.erase(directory.size()-1, 1);
 
 	DIR* directoryPtr = opendir(directory.c_str());
@@ -58,14 +68,17 @@ void File::listFiles(std::vector<std::string>& list, std::string directory, bool
 			if (recursive) listFiles(list, directory + "/" + item->d_name, recursive, extension);
 
 		}
-		else if (item->d_type == DT_REG)
+		else if (type == DT_REG && item->d_type == DT_REG)
 		{
 			if (!extension.empty() && !StringEx::endsWith(item->d_name, extension)) continue;
 
 			Logging::log(LOG_DEBUG, "FILE", "Found file: %s", &item->d_name);
 			list.push_back(directory + "/" + item->d_name);
 		}
-
-
+		else if (type == DT_LNK && item->d_type == DT_LNK)
+		{
+			Logging::log(LOG_DEBUG, "FILE", "Found link: %s", &item->d_name);
+			list.push_back(directory + "/" + item->d_name);
+		}
 	}
 }

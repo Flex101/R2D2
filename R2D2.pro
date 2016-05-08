@@ -22,6 +22,9 @@ HEADERS += \
     Tools/AudioLibrary.h \
     Tools/StringEx.h \
     Tools/CommonDefs.h \
+    Tools/SerialDeviceLibrary.h \
+    Devices/SerialDevice.h \
+    Devices/FootDrive.h
 
 SOURCES += \
     main.cpp \
@@ -35,7 +38,10 @@ SOURCES += \
     Devices/Device.cpp \
     Tools/WavFile.cpp \
     Tools/AudioLibrary.cpp \
-    Tools/StringEx.cpp
+    Tools/StringEx.cpp \
+    Tools/SerialDeviceLibrary.cpp \
+    Devices/SerialDevice.cpp \
+    Devices/FootDrive.cpp
 
 OTHER_FILES += \
     Resources/Audio/Positive/*.wav \
