@@ -7,4 +7,4 @@ cd build
 qmake ../R2D2.pro -r -spec linux-g++
 
 make
-#make install
+make install
