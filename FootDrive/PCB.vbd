@@ -1,0 +1,296 @@
+[VeroDes board definition file v0.01]
+
+DEFBOARD
+{
+   filename    "Motor Drives.vbd"
+
+   created     "09/04/2016 17:16:21"
+   lastsaved   "08/05/2016 10:59:30"
+
+   boardsize   50 holes, 20 tracks
+
+   components  10
+   {
+      defcompo 1
+      devid    "USBFTDI"
+      label    ""
+      lblopp   False
+      position 18,7
+      rotation left
+      userdev  True
+
+      defcompo 2
+      devid    "DP_20PIN03"
+      label    ""
+      lblopp   False
+      position 12,15
+      rotation invert
+      userdev  False
+
+      defcompo 3
+      devid    "RE_STD4"
+      label    "R1"
+      lblopp   False
+      position 15,9
+      rotation none
+      value    "10K"
+      userdev  False
+
+      defcompo 4
+      devid    "RE_STD5"
+      label    "R2"
+      lblopp   False
+      position 14,5
+      rotation none
+      value    "22K"
+      userdev  False
+
+      defcompo 5
+      devid    "RE_STD3"
+      label    "R3"
+      lblopp   False
+      position 13,14
+      rotation none
+      value    "10K"
+      userdev  False
+
+      defcompo 6
+      devid    "CN_SINGLEPIN"
+      label    ""
+      lblopp   False
+      position 5,17
+      rotation none
+      userdev  False
+
+      defcompo 7
+      devid    "CN_SINGLEPIN"
+      label    ""
+      lblopp   False
+      position 5,4
+      rotation none
+      userdev  False
+
+      defcompo 8
+      devid    "CN_SINGLEPIN"
+      label    ""
+      lblopp   False
+      position 32,4
+      rotation none
+      userdev  False
+
+      defcompo 9
+      devid    "CN_SINGLEPIN"
+      label    ""
+      lblopp   False
+      position 32,17
+      rotation none
+      userdev  False
+
+      defcompo 10
+      devid    "3PIN"
+      label    ""
+      lblopp   False
+      position 6,9
+      rotation none
+      userdev  True
+   }
+
+   wirelinks   6
+   {
+      deflink  1
+      startpos 8,15
+      endpos   8,16
+
+      deflink  2
+      startpos 7,15
+      endpos   7,11
+
+      deflink  3
+      startpos 16,12
+      endpos   16,16
+
+      deflink  4
+      startpos 14,10
+      endpos   14,15
+
+      deflink  5
+      startpos 15,8
+      endpos   15,6
+
+      deflink  6
+      startpos 8,7
+      endpos   8,5
+   }
+
+   trackbreaks 17
+   {
+      defbreak 1
+      position 10,6
+
+      defbreak 2
+      position 10,7
+
+      defbreak 3
+      position 10,8
+
+      defbreak 4
+      position 10,9
+
+      defbreak 5
+      position 10,10
+
+      defbreak 6
+      position 10,11
+
+      defbreak 7
+      position 10,12
+
+      defbreak 8
+      position 10,13
+
+      defbreak 9
+      position 10,14
+
+      defbreak 10
+      position 10,15
+
+      defbreak 11
+      position 13,10
+
+      defbreak 12
+      position 13,8
+
+      defbreak 13
+      position 13,12
+
+      defbreak 14
+      position 13,9
+
+      defbreak 15
+      position 8,11
+
+      defbreak 16
+      position 13,11
+
+      defbreak 17
+      position 13,7
+   }
+
+   annotations 13
+   {
+      defanno  1
+      message  "PWM"
+      txtstyle "Courier New" 10pt bold
+      position 1,9
+
+      defanno  2
+      message  "DIR"
+      txtstyle "Courier New" 10pt bold
+      position 1,10
+
+      defanno  3
+      message  "GND"
+      txtstyle "Courier New" 10pt bold
+      position 1,11
+
+      defanno  4
+      message  "DTR"
+      txtstyle "Courier New" 10pt bold
+      position 19,7
+
+      defanno  5
+      message  "RX"
+      txtstyle "Courier New" 10pt bold
+      position 19,8
+
+      defanno  6
+      message  "TX"
+      txtstyle "Courier New" 10pt bold
+      position 19,9
+
+      defanno  7
+      message  "VCC"
+      txtstyle "Courier New" 10pt bold
+      position 19,10
+
+      defanno  8
+      message  "CTS"
+      txtstyle "Courier New" 10pt bold
+      position 19,11
+
+      defanno  9
+      message  "GND"
+      txtstyle "Courier New" 10pt bold
+      position 19,12
+
+      defanno  10
+      message  "FTDI"
+      txtstyle "Courier New" 10pt bold
+      position 25,9
+
+      defanno  11
+      message  "USB->SERIAL"
+      txtstyle "Courier New" 10pt bold
+      position 23,10
+
+      defanno  12
+      message  "R1=10K"
+      txtstyle "Courier New" 10pt bold
+      position 23,15
+
+      defanno  13
+      message  "R2=22K"
+      txtstyle "Courier New" 10pt bold
+      position 23,16
+   }
+}
+
+
+; ###########################
+; ### EMBEDDED COMPONENTS ###
+; ###########################
+
+DEFCOMPONENT
+{
+   name        "USB-FTDI"
+   identifier  "USBFTDI"
+   category    "DIPs"
+   pins        6
+   {
+      pin      1 at 5,16 home anno "DTR"
+      pin      2 at 6,16 anno "RX"
+      pin      3 at 7,16 anno "TX"
+      pin      4 at 8,16 anno "VCC"
+      pin      5 at 9,16 anno "CTS"
+      pin      6 at 10,16 anno "GND"
+   }
+   rects       1
+   {
+      rect     1 at 48,24 - 84,176
+   }
+   circs       0
+   lines       0
+}
+
+DEFCOMPONENT
+{
+   name        "3-Pin Connector"
+   identifier  "3PIN"
+   category    "SIPs"
+   pins        3
+   {
+      pin      1 at 1,1 home
+      pin      2 at 1,2
+      pin      3 at 1,3
+   }
+   rects       1
+   {
+      rect     1 at 4,4 - 16,40
+   }
+   circs       0
+   lines       0
+}
+
+; ###################
+; ### END OF FILE ###
+; ###################
