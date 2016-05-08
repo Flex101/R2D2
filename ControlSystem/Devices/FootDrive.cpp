@@ -1,6 +1,7 @@
 #include "FootDrive.h"
 
-#include <string.h>		// for memset()
+#include <string.h>					// for memset()
+#include <stdio.h>					// for sprintf()
 #include "SerialDeviceLibrary.h"
 #include "Logging.h"
 #include "math.h"
@@ -73,7 +74,9 @@ void FootDrive::setSpeed(float value)
 	if (value > 1) value = 1;
 	speed = value;
 
-	std::string ssStr = std::to_string((int)(fabs(speed) * 1024));
+	char buff[4];
+	sprintf(buff, "%d", (int)(fabs(speed) * 1024));
+	std::string ssStr = buff;
 
 	if (speed >= 0) ssCmd[2] = '+';
 	else ssCmd[2] = '-';
