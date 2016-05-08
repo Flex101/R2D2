@@ -40,6 +40,7 @@ protected:
 
 	std::string goodStartupWav;
 	std::string badStartupWav;
+	std::string shutdownWav;
 
 	bool stopRequest;
 };

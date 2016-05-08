@@ -27,8 +27,9 @@ R2CS::R2CS()
 	devices.push_back(rightFoot);
 
 	stopRequest = false;
-	goodStartupWav =File::applicationDirectory() + "/Resources/Audio/Positive/I Agree.wav";
+	goodStartupWav = File::applicationDirectory() + "/Resources/Audio/Positive/I Agree.wav";
 	badStartupWav = File::applicationDirectory() + "/Resources/Audio/Negative/Weeoooowww!.wav";
+	shutdownWav = File::applicationDirectory() + "/Resources/Audio/Negative/Building Freak Out.wav";
 }
 
 R2CS::~R2CS()
@@ -113,6 +114,14 @@ void R2CS::start()
 	}
 
 	Logging::log(LOG_INFO, "CS", "Control loop stopped");
+
+	audio->loadWavFile(shutdownWav);
+
+	while (audio->isPlaying())
+	{
+		audio->poll();
+		RealTime::sleepMilli(1);
+	}
 }
 
 void R2CS::stop()
