@@ -67,6 +67,7 @@ protected:
 	void writeVibrateEffect();
 
 protected:
+	bool canVibrate;
 	struct ff_effect* vibrateEffect;
 
 };
