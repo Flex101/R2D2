@@ -12,6 +12,7 @@ using namespace R2D2::Devices;
 LogitechCRP2::LogitechCRP2() : Gamepad("Logitech_Logitech_Cordless_RumblePad_2")
 {
 	vibrateEffect = (ff_effect*)malloc(sizeof(ff_effect));
+	canVibrate = true;
 }
 
 LogitechCRP2::~LogitechCRP2()
@@ -52,7 +53,7 @@ void LogitechCRP2::initialise()
 void LogitechCRP2::poll()
 {
 	Gamepad::poll();
-	if (output_id > 0) writeVibrateEffect();
+	if (output_id > 0 && canVibrate) writeVibrateEffect();
 }
 
 void LogitechCRP2::vibrateStrong(float magnitude)
@@ -72,6 +73,7 @@ void LogitechCRP2::writeVibrateEffect()
 	if (ioctl(output_id, EVIOCSFF, vibrateEffect) < 0)
 	{
 		Logging::log(LOG_WARN, "GAMEPAD", "Vibrate config failed");
+		canVibrate = false;
 		return;
 	}
 	outputEvent.code = vibrateEffect->id;
