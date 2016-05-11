@@ -58,9 +58,11 @@ void Audio::disconnect()
 
 void Audio::poll()
 {
-	if ((frames_to_deliver = snd_pcm_avail_update(playback_handle)) < 0)
+	int result = (frames_to_deliver = snd_pcm_avail_update(playback_handle));
+
+	if (result < 0)
 	{
-		Logging::log(LOG_WARN, "AUDIO", "Update failed");
+		Logging::log(LOG_WARN, "AUDIO", "Update failed - %s", snd_strerror(result));
 		return;
 	}
 
