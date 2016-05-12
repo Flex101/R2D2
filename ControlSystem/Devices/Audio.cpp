@@ -8,6 +8,7 @@ using namespace Devices;
 Audio::Audio(std::string device)
 {
 	playbackDevice = device;
+	playing = false;
 }
 
 Audio::~Audio()
@@ -52,7 +53,7 @@ bool Audio::connect()
 void Audio::disconnect()
 {
 	if (!connected) return;
-	snd_pcm_close (playback_handle);
+	snd_pcm_close(playback_handle);
 	Logging::log(LOG_INFO, "AUDIO", "Disconnected");
 }
 
@@ -66,13 +67,17 @@ void Audio::poll()
 		return;
 	}
 
-	if (frames_to_deliver > 4096) frames_to_deliver = 4096;
+	playing = wavFile.isFileLoaded() || (frames_to_deliver < 4096);
 
-	if (!deliverFrames(frames_to_deliver))
+	if (wavFile.isFileLoaded())
 	{
-		Logging::log(LOG_WARN, "AUDIO", "Playback callback failed");
-		wavFile.close();
-		return;
+		if (frames_to_deliver > 4096) frames_to_deliver = 4096;
+
+		if (!deliverFrames(frames_to_deliver))
+		{
+			Logging::log(LOG_WARN, "AUDIO", "Playback callback failed");
+			wavFile.close();
+		}
 	}
 }
 
@@ -81,6 +86,7 @@ bool Audio::loadWavFile(std::string filename)
 	Logging::log(LOG_INFO, "AUDIO", "Playing %s ...", filename.c_str());
 	bool success = wavFile.loadFile(filename);
 	if (success) snd_pcm_prepare(playback_handle);
+	playing = true;
 	return success;
 }
 

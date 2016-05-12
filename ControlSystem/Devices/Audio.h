@@ -22,7 +22,7 @@ public:
 
 	bool loadWavFile(std::string filename);
 
-	bool isPlaying() { return wavFile.isFileLoaded(); }
+	bool isPlaying() { return playing; }
 
 protected:
 	bool deliverFrames(snd_pcm_sframes_t nframes);
@@ -33,6 +33,8 @@ protected:
 	snd_pcm_hw_params_t* hw_params;
 	snd_pcm_sw_params_t* sw_params;
 	snd_pcm_sframes_t frames_to_deliver;
+
+	bool playing;
 
 	WavFile wavFile;
 
