@@ -91,15 +91,20 @@ bool Audio::loadWavFile(std::string filename)
 	return success;
 }
 
-bool Audio::deliverFrames(snd_pcm_sframes_t nframes)
+bool Audio::deliverFrames(snd_pcm_sframes_t requestedframes)
 {
-	nframes = wavFile.streamFrames((short*)&buf, (unsigned int)nframes);
+	int writtenFrames = wavFile.streamFrames((short*)&buf, (unsigned int)requestedframes);
 
-	if ((err = snd_pcm_writei(playback_handle, &buf, nframes)) < 0)
+	for(; writtenFrames < requestedframes; ++writtenFrames)
+	{
+		buf[writtenFrames] = 0;
+	}
+
+	if ((err = snd_pcm_writei(playback_handle, &buf, writtenFrames)) < 0)
 	{
 		Logging::log(LOG_WARN, "AUDIO", "Write failed - %s", snd_strerror (err));
 	}
 
-	return (err == nframes);
+	return (err == writtenFrames);
 }
 
