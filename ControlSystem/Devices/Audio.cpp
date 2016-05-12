@@ -68,10 +68,10 @@ void Audio::poll()
 		return;
 	}
 
-	playing = wavFile.isFileLoaded() || (frames_to_deliver < 4096);
-
-	if (wavFile.isFileLoaded())
+	if (frames_to_deliver > 0)
 	{
+		playing = wavFile.isFileLoaded();
+
 		if (frames_to_deliver > 4096) frames_to_deliver = 4096;
 
 		if (!deliverFrames(frames_to_deliver))
@@ -91,20 +91,15 @@ bool Audio::loadWavFile(std::string filename)
 	return success;
 }
 
-bool Audio::deliverFrames(snd_pcm_sframes_t framesRequested)
+bool Audio::deliverFrames(snd_pcm_sframes_t nframes)
 {
-	unsigned int framesSupplied = wavFile.streamFrames((short*)&buf, (unsigned int)framesRequested);
+	nframes = wavFile.streamFrames((short*)&buf, (unsigned int)nframes);
 
-	for(; framesSupplied < framesRequested; ++framesSupplied)
-	{
-		buf[framesSupplied] = 0;
-	}
-
-	if ((err = snd_pcm_writei(playback_handle, &buf, framesRequested)) < 0)
+	if ((err = snd_pcm_writei(playback_handle, &buf, nframes)) < 0)
 	{
 		Logging::log(LOG_WARN, "AUDIO", "Write failed - %s", snd_strerror (err));
 	}
 
-	return (err == framesRequested);
+	return (err == nframes);
 }
 
