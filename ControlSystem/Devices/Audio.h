@@ -39,6 +39,7 @@ protected:
 	WavFile wavFile;
 
 	int err;
+	int buffer_length;
 	short* buffer;
 };
 

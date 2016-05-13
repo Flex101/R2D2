@@ -9,6 +9,7 @@ Audio::Audio(std::string device)
 {
 	playbackDevice = device;
 	playing = false;
+	buffer_length = 0;
 	buffer = NULL;
 }
 
@@ -35,7 +36,8 @@ bool Audio::connect()
 
 	/* Allocate buffer to hold single period */
 	snd_pcm_hw_params_get_period_size(hw_params, &frames, 0);
-	buffer = (short*)malloc(frames);
+	buffer = (short*)malloc(sizeof(short) * frames);
+	buffer_length = frames;
 
 	if (err >= 0) snd_pcm_hw_params_free(hw_params);
 
@@ -82,7 +84,7 @@ void Audio::poll()
 	{
 		playing = wavFile.isFileLoaded();
 
-		if (frames_to_deliver > 4096) frames_to_deliver = 4096;
+		if (frames_to_deliver > buffer_length) frames_to_deliver = buffer_length;
 
 		if (!deliverFrames(frames_to_deliver))
 		{
