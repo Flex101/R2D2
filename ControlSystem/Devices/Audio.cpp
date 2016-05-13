@@ -9,15 +9,18 @@ Audio::Audio(std::string device)
 {
 	playbackDevice = device;
 	playing = false;
+	buffer = NULL;
 }
 
 Audio::~Audio()
 {
+	free(buffer);
 }
 
 bool Audio::connect()
 {
 	unsigned int rate = 44100;
+	snd_pcm_uframes_t frames;
 
 	err = 0;
 	if (err >= 0) err = snd_pcm_open(&playback_handle, playbackDevice.c_str(), SND_PCM_STREAM_PLAYBACK, 0);
@@ -29,6 +32,11 @@ bool Audio::connect()
 	if (err >= 0) err = snd_pcm_hw_params_set_rate_resample(playback_handle, hw_params, 1);
 	if (err >= 0) err = snd_pcm_hw_params_set_channels(playback_handle, hw_params, 1);
 	if (err >= 0) err = snd_pcm_hw_params(playback_handle, hw_params);
+
+	/* Allocate buffer to hold single period */
+	snd_pcm_hw_params_get_period_size(hw_params, &frames, 0);
+	buffer = (short*)malloc(frames);
+
 	if (err >= 0) snd_pcm_hw_params_free(hw_params);
 
 	if (err >= 0) err = snd_pcm_sw_params_malloc(&sw_params);
@@ -68,6 +76,8 @@ void Audio::poll()
 		return;
 	}
 
+	//Logging::log(LOG_DEBUG, "AUDIO", "frames_to_deliver: %d", frames_to_deliver);
+
 	if (frames_to_deliver > 0)
 	{
 		playing = wavFile.isFileLoaded();
@@ -93,18 +103,13 @@ bool Audio::loadWavFile(std::string filename)
 
 bool Audio::deliverFrames(snd_pcm_sframes_t requestedframes)
 {
-	int writtenFrames = wavFile.streamFrames((short*)&buf, (unsigned int)requestedframes);
+	int writtenFrames = wavFile.streamFrames(buffer, (unsigned int)requestedframes);
 
-	for(; writtenFrames < requestedframes; ++writtenFrames)
+	if ((writtenFrames = snd_pcm_writei(playback_handle, buffer, writtenFrames)) == -EPIPE)
 	{
-		buf[writtenFrames] = 0;
+		snd_pcm_prepare(playback_handle);
 	}
 
-	if ((err = snd_pcm_writei(playback_handle, &buf, writtenFrames)) < 0)
-	{
-		Logging::log(LOG_WARN, "AUDIO", "Write failed - %s", snd_strerror (err));
-	}
-
-	return (err == writtenFrames);
+	return true;
 }
 

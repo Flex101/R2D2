@@ -39,7 +39,7 @@ protected:
 	WavFile wavFile;
 
 	int err;
-	short buf[4096];
+	short* buffer;
 };
 
 } // namespace Devices
