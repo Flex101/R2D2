@@ -20,7 +20,7 @@ public:
 	void connectToDevices();
 	void initialise();
 	void start();
-	void stop();
+	void stop(bool silent = false);
 
 protected:
 
@@ -43,6 +43,7 @@ protected:
 	std::string shutdownWav;
 
 	bool stopRequest;
+	bool stopSilent;
 };
 
 } // namespace R2D2
