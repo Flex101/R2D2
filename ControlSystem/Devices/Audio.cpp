@@ -34,7 +34,7 @@ bool Audio::connect()
 
 	if (!(pulse = pa_simple_new(NULL, "R2D2", PA_STREAM_PLAYBACK, NULL, "playback", &sampleSpec, NULL, NULL, &error)))
 	{
-		Logging::log(LOG_ERROR, "Configuration error: %s", pa_strerror(error));
+		Logging::log(LOG_ERROR, "AUDIO", "Configuration error: %s", pa_strerror(error));
 		return false;
 	}
 
