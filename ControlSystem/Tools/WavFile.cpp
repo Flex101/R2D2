@@ -41,7 +41,7 @@ unsigned int WavFile::streamFrames(short* buffer, unsigned int nFrames)
 	if (!fileLoaded) return 0;
 
 	size_t size = (info.bitsPerSample / 8) * info.numChannels;
-	size_t count = nFrames / size;
+	size_t count = nFrames;// / size;
 	size_t read = fread(buffer, size, count, filestream);
 
 	if (read < count)

@@ -20,7 +20,7 @@ public:
 
 	virtual void poll();
 
-	bool loadWavFile(std::string filename);
+	bool playWavFile(std::string filename);
 
 	bool isPlaying() { return playing; }
 

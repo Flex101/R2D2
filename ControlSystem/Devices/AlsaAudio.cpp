@@ -1,4 +1,4 @@
-#include "Audio.h"
+#include "AlsaAudio.h"
 
 #include "Logging.h"
 
@@ -82,8 +82,9 @@ void Audio::poll()
 	}
 }
 
-bool Audio::loadWavFile(std::string filename)
+bool Audio::playWavFile(std::string filename)
 {
+	if (!connected) return false;
 	Logging::log(LOG_INFO, "AUDIO", "Playing %s ...", filename.c_str());
 	bool success = wavFile.loadFile(filename);
 	if (success) snd_pcm_prepare(playback_handle);

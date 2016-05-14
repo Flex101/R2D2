@@ -17,7 +17,7 @@ HEADERS += \
     Tools/RealTime.h \
     Devices/Gamepad.h \
     Devices/LogitechCRP2.h \
-    Devices/Audio.h \
+    Devices/AlsaAudio.h \
     Devices/Device.h \
     Tools/WavFile.h \
     Tools/AudioLibrary.h \
@@ -35,7 +35,7 @@ SOURCES += \
     Tools/RealTime.cpp \
     Devices/Gamepad.cpp \
     Devices/LogitechCRP2.cpp \
-    Devices/Audio.cpp \
+    Devices/AlsaAudio.cpp \
     Devices/Device.cpp \
     Tools/WavFile.cpp \
     Tools/AudioLibrary.cpp \
@@ -49,8 +49,9 @@ OTHER_FILES += \
     Resources/Audio/Neutral/*.wav \
     Resources/Audio/Negative/*.wav \
 
-LIBS += -lpulse
-LIBS += -lpulse-simple
+LIBS += -lasound
+#LIBS += -lpulse
+#LIBS += -lpulse-simple
 
 resources.files = $$PWD/Resources/*
 resources.path = $$OUT_PWD/Resources
