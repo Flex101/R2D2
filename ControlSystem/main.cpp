@@ -30,8 +30,9 @@ int main()
 
 	controlSystem = new R2CS();
 
-	// register signal SIGINT and signal handler
+	// register signal handler
 	signal(SIGINT, signalHandler);
+	signal(SIGTSTP, signalHandler);
 
 	controlSystem->connectToDevices();
 	controlSystem->initialise();
