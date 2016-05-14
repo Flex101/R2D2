@@ -1,5 +1,8 @@
 #include "Audio.h"
 
+#include <stdlib.h>			// for free()
+#include <pulse/simple.h>
+#include <pulse/error.h>
 #include "Logging.h"
 
 using namespace R2D2;
@@ -9,109 +12,76 @@ Audio::Audio(std::string device)
 {
 	playbackDevice = device;
 	playing = false;
-	buffer_length = 0;
 	buffer = NULL;
+	pulse = NULL;
+	buffer_size = 1024;
+
+	buffer = (short*)malloc(sizeof(short) * buffer_size);
 }
 
 Audio::~Audio()
 {
+	if (pulse != NULL) pa_simple_free(pulse);
 	free(buffer);
 }
 
 bool Audio::connect()
 {
-	unsigned int rate = 44100;
-	snd_pcm_uframes_t frames;
+	pa_sample_spec sampleSpec;
+	sampleSpec.format = PA_SAMPLE_U8;
+	sampleSpec.rate = 44100;
+	sampleSpec.channels = 2;
 
-	err = 0;
-	if (err >= 0) err = snd_pcm_open(&playback_handle, playbackDevice.c_str(), SND_PCM_STREAM_PLAYBACK, 0);
-	if (err >= 0) err = snd_pcm_hw_params_malloc(&hw_params);
-	if (err >= 0) err = snd_pcm_hw_params_any(playback_handle, hw_params);
-	if (err >= 0) err = snd_pcm_hw_params_set_access(playback_handle, hw_params, SND_PCM_ACCESS_RW_INTERLEAVED);
-	if (err >= 0) err = snd_pcm_hw_params_set_format(playback_handle, hw_params, SND_PCM_FORMAT_U16_LE);
-	if (err >= 0) err = snd_pcm_hw_params_set_rate_near(playback_handle, hw_params, &rate, 0);
-	if (err >= 0) err = snd_pcm_hw_params_set_rate_resample(playback_handle, hw_params, 1);
-	if (err >= 0) err = snd_pcm_hw_params_set_channels(playback_handle, hw_params, 1);
-	if (err >= 0) err = snd_pcm_hw_params(playback_handle, hw_params);
-
-	/* Allocate buffer to hold single period */
-	snd_pcm_hw_params_get_period_size(hw_params, &frames, 0);
-	buffer = (short*)malloc(sizeof(short) * frames);
-	buffer_length = frames;
-
-	if (err >= 0) snd_pcm_hw_params_free(hw_params);
-
-	if (err >= 0) err = snd_pcm_sw_params_malloc(&sw_params);
-	if (err >= 0) err = snd_pcm_sw_params_current(playback_handle, sw_params);
-	if (err >= 0) err = snd_pcm_sw_params_set_avail_min(playback_handle, sw_params, 4096);
-	if (err >= 0) err = snd_pcm_sw_params_set_start_threshold(playback_handle, sw_params, 0U);
-	if (err >= 0) err = snd_pcm_sw_params(playback_handle, sw_params);
-
-	if (err < 0)
+	if (!(pulse = pa_simple_new(NULL, "R2D2", PA_STREAM_PLAYBACK, NULL, "playback", &sampleSpec, NULL, NULL, &error)))
 	{
-		Logging::log(LOG_ERROR, "AUDIO", snd_strerror(err));
-		Logging::log(LOG_ERROR, "AUDIO", "Failed to connect");
-
+		Logging::log(LOG_ERROR, "Configuration error: %s", pa_strerror(error));
+		return false;
 	}
-	else Logging::log(LOG_INFO, "AUDIO", "Connected");
 
-	connected = (err >= 0);
+	connected = true;
+	Logging::log(LOG_INFO, "AUDIO", "Connected");
 
 	return connected;
 }
 
 void Audio::disconnect()
-{
+{	
 	if (!connected) return;
-	snd_pcm_close(playback_handle);
 	Logging::log(LOG_INFO, "AUDIO", "Disconnected");
 }
 
 void Audio::poll()
 {
-	int result = (frames_to_deliver = snd_pcm_avail_update(playback_handle));
+	pa_usec_t latency;
 
-	if (result < 0)
+	if ((latency = pa_simple_get_latency(pulse, &error)) == (pa_usec_t)-1)
 	{
-		Logging::log(LOG_WARN, "AUDIO", "Update failed - %s", snd_strerror(result));
-		snd_pcm_recover(playback_handle, result, 0);
+		Logging::log(LOG_WARN, "AUDIO", "Poll error: %s", pa_strerror(error));
 		return;
 	}
 
-	//Logging::log(LOG_DEBUG, "AUDIO", "frames_to_deliver: %d", frames_to_deliver);
-
-	if (frames_to_deliver > 0)
+	if (wavFile.isFileLoaded())
 	{
-		playing = wavFile.isFileLoaded();
+		int framesRead = wavFile.streamFrames(buffer, buffer_size);
 
-		if (frames_to_deliver > buffer_length) frames_to_deliver = buffer_length;
-
-		if (!deliverFrames(frames_to_deliver))
+		if (pa_simple_write(pulse, buffer, (size_t)framesRead, &error) < 0)
 		{
-			Logging::log(LOG_WARN, "AUDIO", "Playback callback failed");
-			wavFile.close();
+			Logging::log(LOG_WARN, "AUDIO", "Write error: %s", pa_strerror(error));
+		}
+
+		if (framesRead < buffer_size)
+		{
+			pa_simple_drain(pulse, &error);
+			playing = false;
 		}
 	}
 }
 
-bool Audio::loadWavFile(std::string filename)
+bool Audio::playWavFile(std::string filename)
 {
 	Logging::log(LOG_INFO, "AUDIO", "Playing %s ...", filename.c_str());
 	bool success = wavFile.loadFile(filename);
-	if (success) snd_pcm_prepare(playback_handle);
 	playing = true;
 	return success;
-}
-
-bool Audio::deliverFrames(snd_pcm_sframes_t requestedframes)
-{
-	int writtenFrames = wavFile.streamFrames(buffer, (unsigned int)requestedframes);
-
-	if ((writtenFrames = snd_pcm_writei(playback_handle, buffer, writtenFrames)) == -EPIPE)
-	{
-		snd_pcm_prepare(playback_handle);
-	}
-
-	return true;
 }
 

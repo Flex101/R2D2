@@ -40,15 +40,18 @@ unsigned int WavFile::streamFrames(short* buffer, unsigned int nFrames)
 {
 	if (!fileLoaded) return 0;
 
-	size_t count = fread(buffer, (info.bitsPerSample / 8) * info.numChannels, nFrames, filestream);
-	if (count < nFrames)
+	size_t size = (info.bitsPerSample / 8) * info.numChannels;
+	size_t count = nFrames / size;
+	size_t read = fread(buffer, size, count, filestream);
+
+	if (read < count)
 	{
 		fileLoaded = false;
 		int err = fclose(filestream);
 		if (err != 0) Logging::log(LOG_ERROR, "WAVFILE", "Close failed");
 	}
 
-	return count;
+	return (read * size);
 }
 
 bool WavFile::readWavInfo()

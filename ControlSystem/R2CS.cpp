@@ -78,11 +78,11 @@ void R2CS::start()
 		Logging::log(LOG_WARN, "CS", "Drive system failure - IMMOBILISED");
 		leftFoot->disconnect();
 		rightFoot->disconnect();
-		audio->loadWavFile(badStartupWav);
+		audio->playWavFile(badStartupWav);
 	}
 	else
 	{
-		audio->loadWavFile(goodStartupWav);
+		audio->playWavFile(goodStartupWav);
 	}
 
 	Logging::log(LOG_INFO, "CS", "Control loop started...");
@@ -104,9 +104,9 @@ void R2CS::start()
 
 			if (audio->isConnected() && !audio->isPlaying())
 			{
-				if (gamepad->dPadDown()) audio->loadWavFile(negativeSounds.random());
-				if (gamepad->dPadLeft()) audio->loadWavFile(neutralSounds.random());
-				if (gamepad->dPadUp()) audio->loadWavFile(positiveSounds.random());
+				if (gamepad->dPadDown()) audio->playWavFile(negativeSounds.random());
+				if (gamepad->dPadLeft()) audio->playWavFile(neutralSounds.random());
+				if (gamepad->dPadUp()) audio->playWavFile(positiveSounds.random());
 			}
 		}
 
@@ -117,7 +117,7 @@ void R2CS::start()
 
 	if (!stopSilent)
 	{
-		audio->loadWavFile(shutdownWav);
+		audio->playWavFile(shutdownWav);
 
 		while (audio->isPlaying())
 		{

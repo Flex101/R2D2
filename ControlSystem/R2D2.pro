@@ -49,7 +49,8 @@ OTHER_FILES += \
     Resources/Audio/Neutral/*.wav \
     Resources/Audio/Negative/*.wav \
 
-LIBS += -lasound
+LIBS += -lpulse
+LIBS += -lpulse-simple
 
 resources.files = $$PWD/Resources/*
 resources.path = $$OUT_PWD/Resources

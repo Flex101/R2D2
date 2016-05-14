@@ -3,8 +3,9 @@
 
 #include "Device.h"
 #include "WavFile.h"
-#include <alsa/asoundlib.h>
 #include <string>
+
+class pa_simple;
 
 namespace R2D2 {
 namespace Devices {
@@ -20,27 +21,20 @@ public:
 
 	virtual void poll();
 
-	bool loadWavFile(std::string filename);
+	bool playWavFile(std::string filename);
 
 	bool isPlaying() { return playing; }
 
 protected:
-	bool deliverFrames(snd_pcm_sframes_t nframes);
-
-protected:
 	std::string playbackDevice;
-	snd_pcm_t* playback_handle;
-	snd_pcm_hw_params_t* hw_params;
-	snd_pcm_sw_params_t* sw_params;
-	snd_pcm_sframes_t frames_to_deliver;
-
 	bool playing;
 
+	pa_simple* pulse;
 	WavFile wavFile;
 
-	int err;
-	int buffer_length;
+	int error;
 	short* buffer;
+	unsigned int buffer_size;
 };
 
 } // namespace Devices
