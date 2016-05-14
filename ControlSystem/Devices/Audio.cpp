@@ -62,7 +62,7 @@ void Audio::poll()
 
 	if (wavFile.isFileLoaded())
 	{
-		int framesRead = wavFile.streamFrames(buffer, buffer_size);
+		unsigned int framesRead = wavFile.streamFrames(buffer, buffer_size);
 
 		if (pa_simple_write(pulse, buffer, (size_t)framesRead, &error) < 0)
 		{
@@ -71,9 +71,12 @@ void Audio::poll()
 
 		if (framesRead < buffer_size)
 		{
-			pa_simple_drain(pulse, &error);
 			playing = false;
 		}
+	}
+	else
+	{
+		pa_simple_flush(pulse, &error);
 	}
 }
 
