@@ -48,6 +48,8 @@ OTHER_FILES += \
     Resources/Audio/Positive/*.wav \
     Resources/Audio/Neutral/*.wav \
     Resources/Audio/Negative/*.wav \
+    build.sh \
+    shutdown.sh \
 
 LIBS += -lasound
 #LIBS += -lpulse

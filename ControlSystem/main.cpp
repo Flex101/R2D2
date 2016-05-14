@@ -12,14 +12,13 @@ static void signalHandler(int signum)
 {
 	Logging::clearLine();	// Clear any echo of Ctrl+C
 
-
 	switch (signum)
 	{
 		case SIGINT:
 			controlSystem->stop(true);
 			break;
 
-		case SIGTERM:
+		case SIGTSTP:
 			controlSystem->stop();
 			break;
 	}

@@ -1,4 +1,4 @@
 #!/bin/bash
 
-killall -s SIGINT -w R2D2
+killall -s SIGTSTP -w R2D2
 poweroff
