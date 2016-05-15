@@ -140,7 +140,7 @@ void R2CS::start()
 		}
 
 		/*** Foot Drive Control ***/
-		if (gamepad->isConnected())
+		if (gamepad->isConnected() && footDrivesEnabled)
 		{
 			LegDrive* drive = onTwoLegs ? static_cast<LegDrive*>(twoLegDrive) : static_cast<LegDrive*>(threeLegDrive);
 
