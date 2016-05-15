@@ -17,7 +17,7 @@ HEADERS += \
     Tools/RealTime.h \
     Devices/Gamepad.h \
     Devices/LogitechCRP2.h \
-    Devices/AlsaAudio.h \
+    Devices/APlayAudio.h \
     Devices/Device.h \
     Tools/WavFile.h \
     Tools/AudioLibrary.h \
@@ -25,7 +25,8 @@ HEADERS += \
     Tools/CommonDefs.h \
     Tools/SerialDeviceLibrary.h \
     Devices/SerialDevice.h \
-    Devices/FootDrive.h
+    Devices/FootDrive.h \
+    Tools/Process.h
 
 SOURCES += \
     main.cpp \
@@ -35,14 +36,15 @@ SOURCES += \
     Tools/RealTime.cpp \
     Devices/Gamepad.cpp \
     Devices/LogitechCRP2.cpp \
-    Devices/AlsaAudio.cpp \
+    Devices/APlayAudio.cpp \
     Devices/Device.cpp \
     Tools/WavFile.cpp \
     Tools/AudioLibrary.cpp \
     Tools/StringEx.cpp \
     Tools/SerialDeviceLibrary.cpp \
     Devices/SerialDevice.cpp \
-    Devices/FootDrive.cpp
+    Devices/FootDrive.cpp \
+    Tools/Process.cpp
 
 OTHER_FILES += \
     Resources/Audio/Positive/*.wav \
