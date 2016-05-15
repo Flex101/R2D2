@@ -11,6 +11,8 @@ Audio::Audio(std::string _playbackDevice)
 {
 	playbackDevice = _playbackDevice;
 	connected = false;
+
+	playWavScript = File::applicationDirectory() + "/Resources/Scripts/playWav.sh";
 }
 
 Audio::~Audio()
@@ -19,9 +21,10 @@ Audio::~Audio()
 
 bool Audio::connect()
 {
-	connected = true;
+	connected = File::fileExists(playWavScript);
 
-	if (!connected) Logging::log(LOG_ERROR, "AUDIO", "Failed to connect");
+	if (connected) Logging::log(LOG_INFO, "AUDIO", "Connected");
+	else Logging::log(LOG_ERROR, "AUDIO", "Failed to connect");
 
 	return connected;
 }
@@ -43,8 +46,9 @@ bool Audio::playWavFile(std::string filename)
 	if (!connected) return false;
 	if (isPlaying()) return false;
 
-	int result = Process::execute("./Resources/Scripts/playWav.sh \"" + filename + "\"");
+	int result = Process::execute("bash " + playWavScript + " \"" + filename + "\"");
 	Logging::log(LOG_INFO, "AUDIO", "Playing %s ...", filename.c_str());
+	playing = true;
 
 	return (result > 0);
 }

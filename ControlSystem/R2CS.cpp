@@ -115,7 +115,7 @@ void R2CS::start()
 
 	Logging::log(LOG_INFO, "CS", "Control loop stopped");
 
-	if (!stopSilent)
+	if (!stopSilent && !audio->isPlaying())
 	{
 		audio->playWavFile(shutdownWav);
 

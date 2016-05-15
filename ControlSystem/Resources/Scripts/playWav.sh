@@ -1,4 +1,4 @@
 #!/bin/bash
 
-aplay -q "$1"  &
+aplay -q "$1" &
 disown

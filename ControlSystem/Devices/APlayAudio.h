@@ -24,6 +24,7 @@ public:
 
 protected:
 	std::string playbackDevice;
+	std::string playWavScript;
 	bool playing;
 };
 

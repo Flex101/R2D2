@@ -10,9 +10,9 @@
 
 using namespace R2D2;
 
-
 int Process::execute(std::string cmd)
 {
+	Logging::log(LOG_DEBUG, "PROC", "Exec: %s", cmd.c_str());
 	return system(cmd.c_str());
 }
 

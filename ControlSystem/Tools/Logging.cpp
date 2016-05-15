@@ -82,7 +82,7 @@ void Logging::log(LogType type, const std::string source, const std::string fmt,
 
 std::string Logging::formatString(const std::string fmt, va_list args)
 {
-	int size = ((int)fmt.size()) * 2 + 100;   // Use a rubric appropriate for your code
+	int size = 1024; //((int)fmt.size()) * 2 + 100;   // Use a rubric appropriate for your code
 	std::string str;
 
 	while (1)
