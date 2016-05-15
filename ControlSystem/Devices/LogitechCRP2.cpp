@@ -48,12 +48,14 @@ void LogitechCRP2::initialise()
 	vibrateEffect->u.rumble.weak_magnitude = 0x0;
 	vibrateEffect->replay.length = 0;
 	vibrateEffect->replay.delay = 0;
+
+	writeVibrateEffect();
 }
 
 void LogitechCRP2::poll()
 {
 	Gamepad::poll();
-	if (output_id > 0 && canVibrate) writeVibrateEffect();
+	if (output_id > 0) writeVibrateEffect();
 }
 
 void LogitechCRP2::vibrateStrong(float magnitude)
@@ -70,6 +72,8 @@ void LogitechCRP2::vibrateWeak(float magnitude)
 
 void LogitechCRP2::writeVibrateEffect()
 {
+	if (!canVibrate) return;
+
 	if (ioctl(output_id, EVIOCSFF, vibrateEffect) < 0)
 	{
 		Logging::log(LOG_WARN, "GAMEPAD", "Vibrate config failed");
