@@ -8,6 +8,7 @@
 namespace R2D2 {
 
 namespace Devices { class Device; class LogitechCRP2; class Audio; class FootDrive; }
+namespace Controllers { class DomeDrive; class ThreeLegDrive; class TwoLegDrive; }
 
 class AudioLibrary;
 
@@ -34,6 +35,10 @@ protected:
 	Devices::FootDrive* leftFoot;
 	Devices::FootDrive* rightFoot;
 
+	Controllers::DomeDrive* domeDrive;
+	Controllers::ThreeLegDrive* threeLegDrive;
+	Controllers::TwoLegDrive* twoLegDrive;
+
 	AudioLibrary positiveSounds;
 	AudioLibrary neutralSounds;
 	AudioLibrary negativeSounds;
@@ -42,6 +47,8 @@ protected:
 	std::string badStartupWav;
 	std::string shutdownWav;
 
+	bool footDrivesEnabled;
+	bool onTwoLegs;
 	bool stopRequest;
 	bool stopSilent;
 };

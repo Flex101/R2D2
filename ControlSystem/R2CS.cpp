@@ -5,12 +5,16 @@
 #include "AudioLibrary.h"
 #include "SerialDeviceLibrary.h"
 #include "FootDrive.h"
+#include "DomeDrive.h"
+#include "ThreeLegDrive.h"
+#include "TwoLegDrive.h"
 #include "File.h"
 #include "RealTime.h"
 #include "Logging.h"
 
 using namespace R2D2;
 using namespace R2D2::Devices;
+using namespace R2D2::Controllers;
 
 R2CS::R2CS()
 {
@@ -26,6 +30,12 @@ R2CS::R2CS()
 	devices.push_back(leftFoot);
 	devices.push_back(rightFoot);
 
+	domeDrive = new DomeDrive();
+	threeLegDrive = new ThreeLegDrive();
+	twoLegDrive = new TwoLegDrive();
+
+	footDrivesEnabled = false;
+	onTwoLegs = false;
 	stopRequest = false;
 	stopSilent = false;
 	goodStartupWav = File::applicationDirectory() + "/Resources/Audio/Positive/I Agree.wav";
@@ -35,6 +45,10 @@ R2CS::R2CS()
 
 R2CS::~R2CS()
 {
+	delete domeDrive;
+	delete threeLegDrive;
+	delete twoLegDrive;
+
 	for (unsigned int i = 0; i < devices.size(); i++)
 	{
 		devices.at(i)->disconnect();
@@ -75,7 +89,7 @@ void R2CS::start()
 {
 	if (!leftFoot->isConnected() || !rightFoot->isConnected())
 	{
-		Logging::log(LOG_WARN, "CS", "Drive system failure - IMMOBILISED");
+		Logging::log(LOG_WARN, "CS", "Foot Drive system failure - IMMOBILISED");
 		leftFoot->disconnect();
 		rightFoot->disconnect();
 		audio->playWavFile(badStartupWav);
@@ -83,17 +97,28 @@ void R2CS::start()
 	else
 	{
 		audio->playWavFile(goodStartupWav);
+		footDrivesEnabled = true;
 	}
 
 	Logging::log(LOG_INFO, "CS", "Control loop started...");
 
 	while (!stopRequest)
 	{
+		if (footDrivesEnabled && (!leftFoot->isConnected() || !rightFoot->isConnected()))
+		{
+			Logging::log(LOG_WARN, "CS", "Foot Drive system failure - IMMOBILISED");
+			leftFoot->disconnect();
+			rightFoot->disconnect();
+			audio->playWavFile(badStartupWav);
+			footDrivesEnabled = false;
+		}
+
 		for (unsigned int i = 0; i < devices.size(); i++)
 		{
 			if(devices.at(i)->isConnected()) devices.at(i)->poll();
 		}
 
+		/*** Vibrate Tests ***/
 		if (gamepad->isConnected())
 		{
 			if (gamepad->shoulderLeftTop()) gamepad->vibrateStrong(1);
@@ -101,13 +126,27 @@ void R2CS::start()
 
 			if (gamepad->shoulderRightTop()) gamepad->vibrateWeak(1);
 			else gamepad->vibrateWeak(0);
+		}
 
-			if (audio->isConnected() && !audio->isPlaying())
+		/*** Sound Control ***/
+		if (gamepad->isConnected() && audio->isConnected())
+		{
+			if (!audio->isPlaying())
 			{
 				if (gamepad->dPadDown()) audio->playWavFile(negativeSounds.random());
 				if (gamepad->dPadLeft()) audio->playWavFile(neutralSounds.random());
 				if (gamepad->dPadUp()) audio->playWavFile(positiveSounds.random());
 			}
+		}
+
+		/*** Foot Drive Control ***/
+		if (gamepad->isConnected())
+		{
+			LegDrive* drive = onTwoLegs ? static_cast<LegDrive*>(twoLegDrive) : static_cast<LegDrive*>(threeLegDrive);
+
+			drive->setInput(gamepad->joyLeftX(), gamepad->joyLeftY());
+			leftFoot->setSpeed(drive->getLeftFootSpeed());
+			rightFoot->setSpeed(drive->getRightFootSpeed());
 		}
 
 		RealTime::sleepMilli(1);

@@ -4,11 +4,12 @@ CONFIG -= app_bundle
 CONFIG -= qt
 CONFIG -= c++11
 
-DEFINES += NO_DEBUG
+#DEFINES += NO_DEBUG
 
 INCLUDEPATH += \
     Tools \
     Devices \
+    Controllers \
 
 HEADERS += \
     R2CS.h \
@@ -26,7 +27,12 @@ HEADERS += \
     Tools/SerialDeviceLibrary.h \
     Devices/SerialDevice.h \
     Devices/FootDrive.h \
-    Tools/Process.h
+    Tools/Process.h \
+    Controllers/ThreeLegDrive.h \
+    Controllers/TwoLegDrive.h \
+    Controllers/DomeDrive.h \
+    Controllers/LegDrive.h \
+    Tools/JoystickMix.h
 
 SOURCES += \
     main.cpp \
@@ -44,7 +50,12 @@ SOURCES += \
     Tools/SerialDeviceLibrary.cpp \
     Devices/SerialDevice.cpp \
     Devices/FootDrive.cpp \
-    Tools/Process.cpp
+    Tools/Process.cpp \
+    Controllers/ThreeLegDrive.cpp \
+    Controllers/TwoLegDrive.cpp \
+    Controllers/DomeDrive.cpp \
+    Controllers/LegDrive.cpp \
+    Tools/JoystickMix.cpp
 
 OTHER_FILES += \
     Resources/Audio/Positive/*.wav \
