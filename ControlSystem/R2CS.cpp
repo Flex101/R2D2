@@ -129,6 +129,13 @@ void R2CS::start()
 
 void R2CS::stop(bool silent)
 {
+	if (stopRequest)
+	{
+		Logging::log(LOG_ERROR, "CS", "Kill request");
+		delete this;
+		return;
+	}
+
 	Logging::log(LOG_WARN, "CS", "Requested to stop");
 	stopSilent = silent;
 	stopRequest = true;
