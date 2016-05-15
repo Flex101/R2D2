@@ -4,7 +4,7 @@ CONFIG -= app_bundle
 CONFIG -= qt
 CONFIG -= c++11
 
-#DEFINES += NO_DEBUG
+DEFINES += NO_DEBUG
 
 INCLUDEPATH += \
     Tools \
