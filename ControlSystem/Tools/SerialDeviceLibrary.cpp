@@ -14,7 +14,7 @@ void SerialDeviceLibrary::initialise()
 	Logging::log(LOG_INFO, "SERIALLIB", "Searching for serial devices...");
 
 	std::vector<std::string> devices;
-	File::listLinks(devices, "/dev/serial/by-id/");
+	File::listLinks(devices, "/dev/serial/by-path/");
 
 	Logging::log(LOG_DEBUG, "SERIALLIB", "Found %d serial device(s)", devices.size());
 

@@ -10,7 +10,7 @@ static R2CS* controlSystem;
 
 static void signalHandler(int signum)
 {
-	Logging::clearLine();	// Clear any echo of Ctrl+C
+	Logging::clearLine();	// Clear any echo of Ctrl+C or Ctrl+Z
 
 	switch (signum)
 	{
