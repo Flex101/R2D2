@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 3.6.1, 2016-05-08T18:35:46. -->
+<!-- Written by QtCreator 3.6.1, 2016-05-28T19:58:22. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -227,7 +227,7 @@
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.PluginSettings"/>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.0">
     <value type="bool" key="Analyzer.QmlProfiler.FlushEnabled">false</value>
-    <value type="uint" key="Analyzer.QmlProfiler.FlushInterval">0</value>
+    <value type="uint" key="Analyzer.QmlProfiler.FlushInterval">1000</value>
     <value type="QString" key="Analyzer.QmlProfiler.LastTraceFile"></value>
     <value type="bool" key="Analyzer.QmlProfiler.Settings.UseGlobalSettings">true</value>
     <valuelist type="QVariantList" key="Analyzer.Valgrind.AddedSuppressionFiles"/>
@@ -268,7 +268,7 @@
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">R2D2</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/matt/GIT/R2D2/R2D2.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/matt/GIT/R2D2/ControlSystem/R2D2.pro</value>
     <value type="bool" key="QmakeProjectManager.QmakeRunConfiguration.UseLibrarySearchPath">true</value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.CommandLineArguments"></value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.ProFile">R2D2.pro</value>

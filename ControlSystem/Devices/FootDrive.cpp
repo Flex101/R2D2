@@ -18,6 +18,7 @@ FootDrive::FootDrive(std::string _ID)
 	ssCmd[1] = 'S';
 	ssCmd[7] = 13;
 
+	reversed = false;
 	setSpeed(0.0f);
 }
 
@@ -68,11 +69,18 @@ void FootDrive::initialise(SerialDeviceLibrary& library)
 	SerialDevice::initialise(path, B115200);
 }
 
+void FootDrive::setReversed(bool _reversed)
+{
+	reversed = _reversed;
+}
+
 void FootDrive::setSpeed(float value)
 {
 	if (value < -1) value = -1;
 	if (value > 1) value = 1;
-	speed = value;
+
+	if (reversed) speed = -value;
+	else speed = value;
 
 	char buff[4];
 	sprintf(buff, "%d", (int)(fabs(speed) * 1024));

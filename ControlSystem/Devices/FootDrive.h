@@ -16,8 +16,9 @@ public:
 	virtual void disconnect();
 	virtual void poll();
 
-	void initialise(SerialDeviceLibrary& library);
 
+	void initialise(SerialDeviceLibrary& library);
+	void setReversed(bool reversed);
 	void setSpeed(float value);
 
 protected:
@@ -25,6 +26,7 @@ protected:
 
 protected:
 	std::string ID;
+	bool reversed;
 	float speed;
 	byte ssCmd[8];
 	byte ssReply[255];
