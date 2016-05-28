@@ -34,6 +34,10 @@ R2CS::R2CS()
 	threeLegDrive = new ThreeLegDrive();
 	twoLegDrive = new TwoLegDrive();
 
+	// Left foot needs to be reversed due to orientation of the motor
+	leftFoot->setReversed(true);
+	rightFoot->setReversed(false);
+
 	footDrivesEnabled = false;
 	onTwoLegs = false;
 	stopRequest = false;
