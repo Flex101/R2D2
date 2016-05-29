@@ -167,7 +167,7 @@ update_pwm:
 	
 		if speed_ramp < speed then
 			speed_ramp = speed_ramp + 1
-		else
+		else if speed_ramp > speed then
 			speed_ramp = speed_ramp - 1
 		end if
 	
