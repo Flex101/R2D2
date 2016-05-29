@@ -18,7 +18,8 @@ FootDrive::FootDrive(std::string _ID)
 	ssCmd[1] = 'S';
 	ssCmd[7] = 13;
 
-	reversed = false;
+	setReversed(false);
+	setMaxSpeed(1.0f);
 	setSpeed(0.0f);
 }
 
@@ -74,13 +75,20 @@ void FootDrive::setReversed(bool _reversed)
 	reversed = _reversed;
 }
 
+void FootDrive::setMaxSpeed(float value)
+{
+	if (value > 1) value = 1;
+	if (value < 0) value = 0;
+	maxSpeed = value;
+}
+
 void FootDrive::setSpeed(float value)
 {
 	if (value < -1) value = -1;
 	if (value > 1) value = 1;
 
-	if (reversed) speed = -value;
-	else speed = value;
+	if (reversed) speed = -value * maxSpeed;
+	else speed = value * maxSpeed;
 
 	char buff[4];
 	sprintf(buff, "%d", (int)(fabs(speed) * 1024));

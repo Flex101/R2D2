@@ -34,6 +34,10 @@ R2CS::R2CS()
 	threeLegDrive = new ThreeLegDrive();
 	twoLegDrive = new TwoLegDrive();
 
+	// Reduce max speed to 25%
+	leftFoot->setMaxSpeed(0.25f);
+	rightFoot->setMaxSpeed(0.25f);
+
 	// Left foot needs to be reversed due to orientation of the motor
 	leftFoot->setReversed(true);
 	rightFoot->setReversed(false);
