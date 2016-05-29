@@ -6,10 +6,10 @@ HPWM PWMDIV4, 0, pwmHHHH, %1000, 199, 0	; 20Khz PWM
 ; 0 - 7 	-	serial processing buffer
 ; 8 		-	processed flag
 ; 9		-	ramp value
-; 10		-	dir (temp)
-; 11		-	dir (ramp)
-; 12		-	dir
-; 13		-	[unused]
+; 10		-	ramp counter
+; 11		-	dir (temp)
+; 12		-	dir (ramp)
+; 13		-	dir
 ; 14 - 15	-	speed (temp)
 ; 16 - 17	-	speed (ramp) 
 ; 18 - 19	-	speed 
@@ -18,9 +18,10 @@ HPWM PWMDIV4, 0, pwmHHHH, %1000, 199, 0	; 20Khz PWM
 #define dir_pin		B.3
 #define processed		b8
 #define ramp		b9
-#define dir_temp		b10
-#define dir_ramp		b11
-#define dir			b12
+#define ramp_count	b10
+#define dir_temp		b11
+#define dir_ramp		b12
+#define dir			b13
 #define speed_temp	w7
 #define speed_temp_l	b14
 #define speed_temp_h	b15
@@ -39,7 +40,8 @@ bptr = 0
 speed_temp = 0
 speed_ramp = 0
 speed = 0
-ramp = 3
+ramp = 1
+ramp_count = 0
 
 gosub reset_watchdog
 
@@ -71,8 +73,12 @@ main_loop:
 		speed = 0
 	end if
 
-	; PWM is updated every loop
-	gosub update_pwm
+	; PWM is updated every [ramp] cycles
+	ramp_count = ramp_count + 1
+	if ramp_count = ramp then
+		gosub update_pwm
+		ramp_count = 0
+	end if
 
 	goto main_loop
 end
@@ -92,7 +98,7 @@ process_msg:
 	
 	; ID - Read ID
 	if processed = 0 and @bptrinc = "I" and @bptrinc = "D" and @bptrinc = 13 then
-		hserout 0,("RFOOT",13)
+		hserout 0,("LFOOT",13)
 		processed = 1
 	end if
 
@@ -151,25 +157,18 @@ update_pwm:
 
 	if dir_ramp != dir then
 		
-		if speed_ramp < ramp then
-			speed_ramp = 0
-			dir_ramp = dir
+		if speed_ramp > 0 then			
+			speed_ramp = speed_ramp - 1;
 		else
-			speed_ramp = speed_ramp - ramp;
+			dir_ramp = dir
 		endif
 	
 	else
 	
 		if speed_ramp < speed then
-			calc = speed - speed_ramp
-			speed_ramp = speed_ramp + ramp
+			speed_ramp = speed_ramp + 1
 		else
-			calc = speed_ramp - speed	
-			speed_ramp = speed_ramp - ramp
-		end if
-
-		if calc < ramp then
-		speed_ramp = speed
+			speed_ramp = speed_ramp - 1
 		end if
 	
 	endif
