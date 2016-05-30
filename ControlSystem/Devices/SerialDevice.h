@@ -26,14 +26,14 @@ public:
 
 	bool writeData(byte* data, unsigned int length);
 	int readData(byte* data);
-	int readLine(byte* data);
+	int readLine(byte* data, unsigned int timeoutMillisecs = 10);
 
 protected:
 	std::string path;
 	unsigned int baudrate;
 	int fd;
 	struct termios tty;
-	Timer timeout;
+	Timer timeoutTimer;
 };
 
 } // namespace Devices

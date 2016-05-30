@@ -100,14 +100,14 @@ int SerialDevice::readData(byte* data)
 	return bytesRead;
 }
 
-int SerialDevice::readLine(byte* data)
+int SerialDevice::readLine(byte* data, unsigned int timeoutMillisecs)
 {
 	if (!connected) return -1;
 
 	byte buffer = 0;
 	int bytesRead = 0;
 
-	timeout.startMilli(2);
+	timeoutTimer.startMilli(timeoutMillisecs);
 
 	while (true)
 	{
@@ -119,7 +119,7 @@ int SerialDevice::readLine(byte* data)
 			data++;
 		}
 
-		if (timeout.hasElapsed())
+		if (timeoutTimer.hasElapsed())
 		{
 			Logging::log(LOG_WARN, "SERIAL", "readLine() timeout");
 			break;
