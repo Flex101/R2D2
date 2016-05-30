@@ -107,6 +107,8 @@ int SerialDevice::readLine(byte* data)
 	byte buffer = 0;
 	int bytesRead = 0;
 
+	timeout.startMilli(2);
+
 	while (true)
 	{
 		if (read(fd, &buffer, 1 ) > 0)
@@ -115,6 +117,12 @@ int SerialDevice::readLine(byte* data)
 			if (buffer == '\r') break;
 			*data = buffer;
 			data++;
+		}
+
+		if (timeout.hasElapsed())
+		{
+			Logging::log(LOG_WARN, "SERIAL", "readLine() timeout");
+			break;
 		}
 	}
 

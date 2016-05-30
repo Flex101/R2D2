@@ -2,6 +2,7 @@
 #define SERIALDEVICE_H
 
 #include "Device.h"
+#include "RealTime.h"	// for Timer;
 #include <termios.h>	// for POSIX terminal control definitions
 #include <string>
 
@@ -32,6 +33,7 @@ protected:
 	unsigned int baudrate;
 	int fd;
 	struct termios tty;
+	Timer timeout;
 };
 
 } // namespace Devices
