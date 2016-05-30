@@ -157,7 +157,7 @@ void R2CS::start()
 			rightFoot->setSpeed(drive->getRightFootSpeed());
 		}
 
-		RealTime::sleepMilli(1);
+		RealTime::sleepMilli(10);
 	}
 
 	Logging::log(LOG_INFO, "CS", "Control loop stopped");
