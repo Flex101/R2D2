@@ -81,6 +81,13 @@ void StopWatch::restart()
 
 timespec StopWatch::elapsed()
 {
+	if (!running)
+	{
+		now.tv_sec = 0;
+		now.tv_nsec = 0;
+		return now;
+	}
+
 	clock_gettime(CLOCK_REALTIME, &now);
 	return RealTime::timeDiff(startTime, now);
 }
