@@ -143,7 +143,7 @@ void R2CS::start()
 			{
 				if (gamepad->actionBottom()) audio->playWavFile(negativeSounds.random());
 				if (gamepad->actionRight()) audio->playWavFile(neutralSounds.random());
-				if (gamepad->actionUp()) audio->playWavFile(positiveSounds.random());
+				if (gamepad->actionTop()) audio->playWavFile(positiveSounds.random());
 			}
 		}
 
