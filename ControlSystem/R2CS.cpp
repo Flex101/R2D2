@@ -34,10 +34,10 @@ R2CS::R2CS()
 	threeLegDrive = new ThreeLegDrive();
 	twoLegDrive = new TwoLegDrive();
 
-	// Reduce max speed to 40%
-	leftFoot->setMaxSpeed(0.4f);
-	rightFoot->setMaxSpeed(0.4f);
-
+	// Turn off drives at start
+	leftFoot->setMaxSpeed(0.0f);
+	rightFoot->setMaxSpeed(0.0f);
+	
 	// Left foot needs to be reversed due to orientation of the motor
 	leftFoot->setReversed(true);
 	rightFoot->setReversed(false);
@@ -153,6 +153,31 @@ void R2CS::start()
 			LegDrive* drive = onTwoLegs ? static_cast<LegDrive*>(twoLegDrive) : static_cast<LegDrive*>(threeLegDrive);
 
 			drive->setInput(gamepad->joyLeftX(), gamepad->joyLeftY());
+
+			// Dead-man switch
+			if (gamepad->shoulderLeftTop())
+			{
+				// High speed select
+				if (gamepad->shoulderLeftBottom())
+				{
+					// High speed - 40%
+					leftFoot->setMaxSpeed(0.4f);
+					rightFoot->setMaxSpeed(0.4f);
+				}
+				else
+				{
+					// Walking pace - 25%
+					leftFoot->setMaxSpeed(0.25f);
+					rightFoot->setMaxSpeed(0.25f);
+				}
+			}
+			else
+			{
+				leftFoot->setMaxSpeed(0.0f);
+				rightFoot->setMaxSpeed(0.0f);
+			}
+
+
 			leftFoot->setSpeed(drive->getLeftFootSpeed());
 			rightFoot->setSpeed(drive->getRightFootSpeed());
 		}
