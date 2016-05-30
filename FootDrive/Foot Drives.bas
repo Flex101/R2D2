@@ -5,8 +5,8 @@ HPWM PWMDIV4, 0, pwmHHHH, %1000, 199, 0	; 20Khz PWM
 ; RAM Allocation
 ; 0 - 7 	-	serial processing buffer
 ; 8 		-	processed flag
-; 9		-	ramp value
-; 10		-	ramp counter
+; 9		-	ramp numerator (how much to increase speed by)
+; 10		-	ramp denominator (how often to increase speed)
 ; 11		-	dir (temp)
 ; 12		-	dir (ramp)
 ; 13		-	dir
@@ -14,11 +14,12 @@ HPWM PWMDIV4, 0, pwmHHHH, %1000, 199, 0	; 20Khz PWM
 ; 16 - 17	-	speed (ramp) 
 ; 18 - 19	-	speed 
 ; 20 - 21	-	calc
+; 22		-	ramp counter
 
 #define dir_pin		B.3
 #define processed		b8
-#define ramp		b9
-#define ramp_count	b10
+#define ramp_num		b9
+#define ramp_den		b10
 #define dir_temp		b11
 #define dir_ramp		b12
 #define dir			b13
@@ -30,6 +31,7 @@ HPWM PWMDIV4, 0, pwmHHHH, %1000, 199, 0	; 20Khz PWM
 #define speed_ramp_h	b17
 #define speed		w9
 #define calc		w10
+#define ramp_count	b22
 
 main:
 
@@ -40,7 +42,8 @@ bptr = 0
 speed_temp = 0
 speed_ramp = 0
 speed = 0
-ramp = 1
+ramp_num = 2
+ramp_den = 1
 ramp_count = 0
 
 gosub reset_watchdog
@@ -73,9 +76,9 @@ main_loop:
 		speed = 0
 	end if
 
-	; PWM is updated every [ramp] cycles
+	; PWM is updated every [ramp_den] cycles
 	ramp_count = ramp_count + 1
-	if ramp_count = ramp then
+	if ramp_count = ramp_den then
 		gosub update_pwm
 		ramp_count = 0
 	end if
@@ -157,18 +160,25 @@ update_pwm:
 
 	if dir_ramp != dir then
 		
-		if speed_ramp > 0 then			
-			speed_ramp = speed_ramp - 1;
-		else
+		if speed_ramp < ramp_num then
+			speed_ramp = 0
 			dir_ramp = dir
+		else
+			speed_ramp = speed_ramp - ramp_num
 		endif
 	
 	else
 	
 		if speed_ramp < speed then
-			speed_ramp = speed_ramp + 1
-		else if speed_ramp > speed then
-			speed_ramp = speed_ramp - 1
+			calc = speed - speed_ramp
+			speed_ramp = speed_ramp + ramp_num
+		else
+			calc = speed_ramp - speed	
+			speed_ramp = speed_ramp - ramp_num
+		end if
+
+		if calc < ramp_num then
+		speed_ramp = speed
 		end if
 	
 	endif
