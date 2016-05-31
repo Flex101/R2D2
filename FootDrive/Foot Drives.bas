@@ -59,7 +59,8 @@ main_loop:
 			if @ptr = 13 then 
 				gosub process_msg
 			else if bptr > 7 then
-				gosub flush
+				gosub flush				
+				hserout 0,("!buffer overflow",13)
 				goto main_loop
 			end if
 		
@@ -74,6 +75,7 @@ main_loop:
 	; watchdog timer triggered due to lack of coms
 	if timer > 0 then
 		speed = 0
+		gosub flush
 	end if
 
 	; PWM is updated every [ramp_den] cycles
@@ -152,7 +154,6 @@ flush:
 	bptr = 0
 	ptr = 0
 	hserptr = 0
-	hserout 0,("!buffer overflow",13)
 	
 return
 
