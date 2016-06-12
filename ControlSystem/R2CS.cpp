@@ -5,6 +5,7 @@
 #include "AudioLibrary.h"
 #include "SerialDeviceLibrary.h"
 #include "FootDrive.h"
+#include "Dome.h"
 #include "DomeDrive.h"
 #include "ThreeLegDrive.h"
 #include "TwoLegDrive.h"
@@ -26,9 +27,11 @@ R2CS::R2CS()
 
 	leftFoot = new FootDrive("LFOOT");
 	rightFoot = new FootDrive("RFOOT");
+	dome = new Dome();
 
 	devices.push_back(leftFoot);
 	devices.push_back(rightFoot);
+	devices.push_back(dome);
 
 	domeDrive = new DomeDrive();
 	threeLegDrive = new ThreeLegDrive();
@@ -37,10 +40,12 @@ R2CS::R2CS()
 	// Turn off drives at start
 	leftFoot->setMaxSpeed(0.0f);
 	rightFoot->setMaxSpeed(0.0f);
+	dome->setMaxSpeed(0.0f);
 	
 	// Left foot needs to be reversed due to orientation of the motor
 	leftFoot->setReversed(true);
 	rightFoot->setReversed(false);
+	dome->setReversed(false);
 
 	footDrivesEnabled = false;
 	onTwoLegs = false;
@@ -72,6 +77,7 @@ void R2CS::connectToDevices()
 	serialDevices.initialise();
 	leftFoot->initialise(serialDevices);
 	rightFoot->initialise(serialDevices);
+	dome->initialise(serialDevices);
 
 	bool connectedToAll = true;
 
@@ -180,6 +186,25 @@ void R2CS::start()
 
 			leftFoot->setSpeed(drive->getLeftFootSpeed());
 			rightFoot->setSpeed(drive->getRightFootSpeed());
+		}
+
+		/*** Dome Drive Control ***/
+		if (gamepad->isConnected())
+		{
+			domeDrive->setInput(gamepad->joyRightX());
+
+			// Dead-man switch
+			if (gamepad->shoulderLeftTop())
+			{
+				// Full Speed - 100%
+				dome->setMaxSpeed(1.0f);
+			}
+			else
+			{
+				dome->setMaxSpeed(0.0f);
+			}
+
+			dome->setSpeed(domeDrive->getDomeSpeed());
 		}
 
 		RealTime::sleepMilli(10);

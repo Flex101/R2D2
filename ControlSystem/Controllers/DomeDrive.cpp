@@ -15,10 +15,5 @@ DomeDrive::~DomeDrive()
 
 void DomeDrive::setInput(float x)
 {
-
-}
-
-void DomeDrive::getOutput(float& domeDrive)
-{
-
+	domeSpeed = x;
 }

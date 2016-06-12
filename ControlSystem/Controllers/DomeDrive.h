@@ -11,7 +11,11 @@ public:
 	virtual ~DomeDrive();
 
 	void setInput(float x);
-	void getOutput(float& domeDrive);
+
+	float getDomeSpeed() const	{ return domeSpeed; }
+
+protected:
+	float domeSpeed;
 };
 
 } // namespace Controllers

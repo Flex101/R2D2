@@ -32,7 +32,8 @@ HEADERS += \
     Controllers/TwoLegDrive.h \
     Controllers/DomeDrive.h \
     Controllers/LegDrive.h \
-    Tools/JoystickMix.h
+    Tools/JoystickMix.h \
+    Devices/Dome.h
 
 SOURCES += \
     main.cpp \
@@ -55,7 +56,8 @@ SOURCES += \
     Controllers/TwoLegDrive.cpp \
     Controllers/DomeDrive.cpp \
     Controllers/LegDrive.cpp \
-    Tools/JoystickMix.cpp
+    Tools/JoystickMix.cpp \
+    Devices/Dome.cpp
 
 OTHER_FILES += \
     Resources/Audio/Positive/*.wav \

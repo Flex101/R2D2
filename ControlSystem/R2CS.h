@@ -7,7 +7,7 @@
 
 namespace R2D2 {
 
-namespace Devices { class Device; class LogitechCRP2; class Audio; class FootDrive; }
+namespace Devices { class Device; class LogitechCRP2; class Audio; class FootDrive; class Dome; }
 namespace Controllers { class DomeDrive; class ThreeLegDrive; class TwoLegDrive; }
 
 class AudioLibrary;
@@ -34,6 +34,7 @@ protected:
 	Devices::Audio* audio;
 	Devices::FootDrive* leftFoot;
 	Devices::FootDrive* rightFoot;
+	Devices::Dome* dome;
 
 	Controllers::DomeDrive* domeDrive;
 	Controllers::ThreeLegDrive* threeLegDrive;
