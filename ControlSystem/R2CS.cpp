@@ -196,8 +196,8 @@ void R2CS::start()
 			// Dead-man switch
 			if (gamepad->shoulderLeftTop())
 			{
-				// Full Speed - 100%
-				dome->setMaxSpeed(1.0f);
+				// Full Speed - 95%
+				dome->setMaxSpeed(0.95f);
 			}
 			else
 			{
