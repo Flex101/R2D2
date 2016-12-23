@@ -10,7 +10,6 @@ using namespace Devices;
 Audio::Audio(std::string _playbackDevice)
 {
 	playbackDevice = _playbackDevice;
-	connected = false;
 	playing = false;
 
 	playWavScript = File::applicationDirectory() + "/Resources/Scripts/playWav.sh";
