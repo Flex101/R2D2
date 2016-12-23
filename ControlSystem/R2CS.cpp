@@ -86,8 +86,18 @@ void R2CS::connectToDevices()
 		connectedToAll &= devices.at(i)->connect();
 	}
 
-	if (connectedToAll) Logging::log(LOG_INFO, "CS", "Connected to all devices");
-	else Logging::log(LOG_WARN, "CS", "Unable to connect to all devices");
+	footDrivesEnabled = leftFoot->isConnected() && rightFoot->isConnected();
+
+	if (connectedToAll)
+	{
+		audio->playWavFile(goodStartupWav);
+		Logging::log(LOG_INFO, "CS", "Connected to all devices");
+	}
+	else
+	{
+		audio->playWavFile(badStartupWav);
+		Logging::log(LOG_WARN, "CS", "Unable to connect to all devices");
+	}
 }
 
 void R2CS::initialise()
@@ -100,31 +110,23 @@ void R2CS::initialise()
 }
 
 void R2CS::start()
-{
-	if (!leftFoot->isConnected() || !rightFoot->isConnected())
-	{
-		Logging::log(LOG_WARN, "CS", "Foot Drive system failure - IMMOBILISED");
-		leftFoot->disconnect();
-		rightFoot->disconnect();
-		audio->playWavFile(badStartupWav);
-	}
-	else
-	{
-		audio->playWavFile(goodStartupWav);
-		footDrivesEnabled = true;
-	}
-
+{	
 	Logging::log(LOG_INFO, "CS", "Control loop started...");
 
 	while (!stopRequest)
 	{
+		if (!leftFoot->isConnected()) leftFoot->reconnect();
+		if (!rightFoot->isConnected()) rightFoot->reconnect();
+
 		if (footDrivesEnabled && (!leftFoot->isConnected() || !rightFoot->isConnected()))
 		{
-			Logging::log(LOG_WARN, "CS", "Foot Drive system failure - IMMOBILISED");
-			leftFoot->disconnect();
-			rightFoot->disconnect();
-			audio->playWavFile(badStartupWav);
 			footDrivesEnabled = false;
+			Logging::log(LOG_WARN, "CS", "Foot Drive system failure - IMMOBILISED");
+		}
+		if (!footDrivesEnabled && (leftFoot->isConnected() && rightFoot->isConnected()))
+		{
+			footDrivesEnabled = true;
+			Logging::log(LOG_INFO, "CS", "Foot Drive system restored - DRIVES ENABLED");
 		}
 
 		for (unsigned int i = 0; i < devices.size(); i++)
