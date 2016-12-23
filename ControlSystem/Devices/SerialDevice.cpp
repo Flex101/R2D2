@@ -100,7 +100,7 @@ int SerialDevice::readData(byte* data)
 	return bytesRead;
 }
 
-int SerialDevice::readLine(byte* data, unsigned int timeoutMillisecs)
+int SerialDevice::readLine(byte* data, unsigned int timeoutMillisecs, bool silent)
 {
 	if (!connected) return -1;
 
@@ -121,10 +121,15 @@ int SerialDevice::readLine(byte* data, unsigned int timeoutMillisecs)
 
 		if (timeoutTimer.hasElapsed())
 		{
-			Logging::log(LOG_WARN, "SERIAL", "readLine() timeout");
+			if (!silent) Logging::log(LOG_WARN, "SERIAL", "readLine() timeout");
 			break;
 		}
 	}
 
 	return bytesRead;
+}
+
+void SerialDevice::flush()
+{
+	tcflush(fd, TCIOFLUSH);
 }

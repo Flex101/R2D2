@@ -26,7 +26,8 @@ public:
 
 	bool writeData(byte* data, unsigned int length);
 	int readData(byte* data);
-	int readLine(byte* data, unsigned int timeoutMillisecs = 10);
+	int readLine(byte* data, unsigned int timeoutMillisecs = 10, bool silent = false);
+	void flush();
 
 protected:
 	std::string path;
