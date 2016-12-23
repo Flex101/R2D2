@@ -13,6 +13,7 @@ public:
 	virtual ~FootDrive();
 
 	virtual bool connect();
+	virtual bool reconnect();
 	virtual void disconnect();
 	virtual void poll();
 
@@ -22,6 +23,7 @@ public:
 	void setSpeed(float value);
 
 protected:
+	bool commsCheck(unsigned int retryLimit = 3);
 	void writeSpeed();
 
 protected:
@@ -29,8 +31,9 @@ protected:
 	bool reversed;
 	float maxSpeed;
 	float speed;
+	byte ccCmd[3];
 	byte ssCmd[8];
-	byte ssReply[255];
+	byte reply[255];
 	std::string replyStr;
 };
 

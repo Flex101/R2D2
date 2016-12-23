@@ -14,6 +14,10 @@ FootDrive::FootDrive(std::string _ID)
 	ID = _ID;
 	speed = 0;
 
+	ccCmd[0] = 'C';
+	ccCmd[1] = 'C';
+	ccCmd[2] = 13;
+
 	ssCmd[0] = 'S';
 	ssCmd[1] = 'S';
 	ssCmd[7] = 13;
@@ -30,9 +34,21 @@ FootDrive::~FootDrive()
 bool FootDrive::connect()
 {
 	bool success = SerialDevice::connect();
+	success &= commsCheck();
 
 	if (success) Logging::log(LOG_INFO, ID, "Connected");
 	else Logging::log(LOG_ERROR, ID, "Failed to connect");
+
+	return success;
+}
+
+bool FootDrive::reconnect()
+{
+	bool success = SerialDevice::connect();
+	success &= commsCheck();
+
+	if (success) Logging::log(LOG_INFO, ID, "Reconnected");
+	else SerialDevice::disconnect();
 
 	return success;
 }
@@ -51,10 +67,19 @@ void FootDrive::poll()
 	if (!connected) return;
 
 	writeSpeed();
-	memset(&ssReply, 0, sizeof(ssReply));
-	readLine((byte*)&ssReply);
-	replyStr = (char*)&ssReply;
-	if (replyStr != "SSOK") Logging::log(LOG_WARN, ID, "Irregular reply: %s", replyStr.c_str());
+	memset(&reply, 0, sizeof(reply));
+	readLine((byte*)&reply);
+	replyStr = (char*)&reply;
+
+	if (replyStr.empty())
+	{
+		Logging::log(LOG_WARN, ID, "No reply! Assuming disconnected.", replyStr.c_str());
+		disconnect();
+	}
+	else if (replyStr != "SSOK")
+	{
+		 Logging::log(LOG_WARN, ID, "Irregular reply: %s", replyStr.c_str());
+	}
 }
 
 void FootDrive::initialise(SerialDeviceLibrary& library)
@@ -63,7 +88,7 @@ void FootDrive::initialise(SerialDeviceLibrary& library)
 
 	if (path.empty())
 	{
-		Logging::log(LOG_ERROR, ID, "Unable to find foot drive path");
+		Logging::log(LOG_ERROR, ID, "Unable to find device");
 		return;
 	}
 
@@ -102,6 +127,25 @@ void FootDrive::setSpeed(float value)
 		if (i < (int)ssStr.length()) ssCmd[6-i] = ssStr.at(ssStr.length() - (i + 1));
 		else ssCmd[6-i] = '0';
 	}
+}
+
+bool FootDrive::commsCheck(unsigned int retryLimit)
+{
+	for (unsigned int i = 0; i < retryLimit; ++i)
+	{
+		writeData((byte*)&ccCmd, 3);
+		memset(&reply, 0, sizeof(reply));
+		readLine((byte*)&reply, 50, true);
+		replyStr = (char*)&reply;
+
+		if (replyStr == "CCOK")
+		{
+			SerialDevice::flush();
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void FootDrive::writeSpeed()
