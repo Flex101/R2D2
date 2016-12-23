@@ -12,3 +12,8 @@ Device::~Device()
 {
 }
 
+bool Device::reconnect()
+{
+	return connect();
+}
+

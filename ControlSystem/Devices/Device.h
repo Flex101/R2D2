@@ -11,6 +11,7 @@ public:
 	virtual ~Device();
 
 	virtual bool connect() = 0;
+	virtual bool reconnect();
 	virtual void disconnect() = 0;
 
 	bool isConnected() { return connected; }
