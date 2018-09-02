@@ -1,0 +1,4 @@
+#ifndef PS3CONTROLLER_H
+#define PS3CONTROLLER_H
+
+#endif // PS3CONTROLLER_H
