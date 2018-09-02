@@ -15,7 +15,7 @@ public:
 	virtual bool connect();
 	virtual bool reconnect();
 	virtual void disconnect();
-	virtual void poll();
+	virtual bool poll();
 
 	void initialise(SerialDeviceLibrary& library);
 	void setReversed(bool reversed);

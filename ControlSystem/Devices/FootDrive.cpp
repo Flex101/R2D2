@@ -62,9 +62,9 @@ void FootDrive::disconnect()
 	Logging::log(LOG_INFO, ID, "Disconnected");
 }
 
-void FootDrive::poll()
+bool FootDrive::poll()
 {
-	if (!connected) return;
+	if (!connected) return false;
 
 	writeSpeed();
 	memset(&reply, 0, sizeof(reply));
@@ -75,11 +75,15 @@ void FootDrive::poll()
 	{
 		Logging::log(LOG_WARN, ID, "No reply! Assuming disconnected.", replyStr.c_str());
 		disconnect();
+		return false;
 	}
 	else if (replyStr != "SSOK")
 	{
 		 Logging::log(LOG_WARN, ID, "Irregular reply: %s", replyStr.c_str());
+		 return false;
 	}
+
+	return true;
 }
 
 void FootDrive::initialise(SerialDeviceLibrary& library)

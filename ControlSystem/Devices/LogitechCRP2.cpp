@@ -1,4 +1,4 @@
-#include "LogitechCRP2.h"
+#include "Devices/LogitechCRP2.h"
 
 #include "Tools/Logging.h"
 #include <stdlib.h>			// for malloc() and free()
@@ -20,14 +20,20 @@ LogitechCRP2::~LogitechCRP2()
 	free(vibrateEffect);
 }
 
+bool LogitechCRP2::connect()
+{
+	if (connected) return true;
+
+	return Gamepad::connect();
+}
+
 void LogitechCRP2::disconnect()
 {
-	if (connected)
-	{
-		vibrateStrong(0);
-		vibrateWeak(0);
-		writeVibrateEffect();
-	}
+	if (!connected) return;
+
+	vibrateStrong(0);
+	vibrateWeak(0);
+	writeVibrateEffect();
 
 	Gamepad::disconnect();
 }
@@ -52,10 +58,14 @@ void LogitechCRP2::initialise()
 	writeVibrateEffect();
 }
 
-void LogitechCRP2::poll()
+bool LogitechCRP2::poll()
 {
-	Gamepad::poll();
-	if (output_id > 0) writeVibrateEffect();
+	bool success = Gamepad::poll();
+
+	if (success) writeVibrateEffect();
+	else disconnect();
+
+	return success;
 }
 
 void LogitechCRP2::vibrateStrong(float magnitude)

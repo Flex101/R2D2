@@ -7,7 +7,7 @@
 
 namespace R2D2 {
 
-namespace Devices { class Device; class LogitechCRP2; class Audio; class FootDrive; class Dome; }
+namespace Devices { class Device; class R2Controller; class Audio; class FootDrive; class Dome; }
 namespace Controllers { class DomeDrive; class ThreeLegDrive; class TwoLegDrive; }
 
 class AudioLibrary;
@@ -30,7 +30,7 @@ protected:
 	std::vector<Devices::Device*> devices;
 	SerialDeviceLibrary serialDevices;
 
-	Devices::LogitechCRP2* gamepad;
+	Devices::R2Controller* gamepad;
 	Devices::Audio* audio;
 	Devices::FootDrive* leftFoot;
 	Devices::FootDrive* rightFoot;

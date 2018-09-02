@@ -1,28 +1,28 @@
 #ifndef LOGITECHCRP2_H
 #define LOGITECHCRP2_H
 
-#include "Gamepad.h"
+#include "Devices/R2Controller.h"
+#include "Devices/Gamepad.h"
 
 struct ff_effect;
 
 namespace R2D2 {
 namespace Devices {
 
-class LogitechCRP2 : public Gamepad
+class LogitechCRP2 : public R2Controller, public Gamepad
 {
 public:
 	explicit LogitechCRP2();
 	virtual ~LogitechCRP2();
 
+	virtual bool connect();
 	virtual void disconnect();
 
 	virtual void initialise();
-	virtual void poll();
+	virtual bool poll();
 
 	void vibrateStrong(float magnitude);
 	void vibrateWeak(float magnitude);
-
-	bool connect()				{ return Gamepad::connect(true); }
 
 	/*** FRIENDLY MAPPINGS ***/
 
@@ -62,6 +62,19 @@ public:
 	bool button8()				{ return getButtonValue(7); }
 	bool button9()				{ return getButtonValue(8); }
 	bool button10()				{ return getButtonValue(9); }
+
+	/*** R2Controller Functions ***/
+
+	virtual bool isConnected()			{ return Device::isConnected(); }
+	virtual float feetjoyX()			{ return joyLeftX(); }
+	virtual float feetJoyY()			{ return joyLeftY(); }
+	virtual float domeJoyX()			{ return joyRightX(); }
+	virtual float domeJoyY()			{ return joyRightY(); }
+	virtual bool deadMan()				{ return shoulderLeftTop(); }
+	virtual bool highSpeedEnable()		{ return shoulderLeftBottom(); }
+	virtual bool positiveSound()		{ return actionTop(); }
+	virtual bool neutralSound()			{ return actionRight(); }
+	virtual bool negativeSound()		{ return actionBottom(); }
 
 protected:
 	void writeVibrateEffect();

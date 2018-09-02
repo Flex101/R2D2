@@ -16,7 +16,7 @@ public:
 
 	bool isConnected() { return connected; }
 
-	virtual void poll() = 0;
+	virtual bool poll() = 0;
 
 protected:
 	bool connected;

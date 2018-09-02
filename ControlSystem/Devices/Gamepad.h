@@ -9,17 +9,17 @@
 namespace R2D2 {
 namespace Devices {
 
-class Gamepad : public Device
+class Gamepad
 {
 
 public:
 	explicit Gamepad(std::string name);
 	virtual ~Gamepad();
 
-	virtual bool connect(bool withFF = false);
-	virtual void disconnect();
+	bool connect(bool withFF = false);
+	void disconnect();
 
-	virtual void poll();
+	bool poll();
 
 	float getAxisValue(unsigned int index);
 	bool getButtonValue(unsigned int index);

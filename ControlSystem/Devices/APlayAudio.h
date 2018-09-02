@@ -16,7 +16,7 @@ public:
 	virtual bool connect();
 	virtual void disconnect();
 
-	virtual void poll();
+	virtual bool poll();
 
 	bool playWavFile(std::string filename);
 

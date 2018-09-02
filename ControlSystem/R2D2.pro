@@ -31,7 +31,8 @@ HEADERS += \
     Controllers/LegDrive.h \
     Tools/JoystickMix.h \
     Devices/Dome.h \
-    Devices/PS3Controller.h
+    Devices/PS3Controller.h \
+    Devices/R2Controller.h
 
 SOURCES += \
     main.cpp \
@@ -56,7 +57,8 @@ SOURCES += \
     Controllers/LegDrive.cpp \
     Tools/JoystickMix.cpp \
     Devices/Dome.cpp \
-    Devices/PS3Controller.cpp
+    Devices/PS3Controller.cpp \
+    Devices/R2Controller.cpp
 
 OTHER_FILES += \
     Resources/Audio/Positive/*.wav \

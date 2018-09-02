@@ -131,17 +131,7 @@ void R2CS::start()
 
 		for (unsigned int i = 0; i < devices.size(); i++)
 		{
-			if(devices.at(i)->isConnected()) devices.at(i)->poll();
-		}
-
-		/*** Vibrate Tests ***/
-		if (gamepad->isConnected())
-		{
-			if (gamepad->shoulderLeftTop()) gamepad->vibrateStrong(1);
-			else gamepad->vibrateStrong(0);
-
-			if (gamepad->shoulderRightTop()) gamepad->vibrateWeak(1);
-			else gamepad->vibrateWeak(0);
+			if (devices.at(i)->isConnected()) devices.at(i)->poll();
 		}
 
 		/*** Sound Control ***/
@@ -149,9 +139,9 @@ void R2CS::start()
 		{
 			if (!audio->isPlaying())
 			{
-				if (gamepad->actionBottom()) audio->playWavFile(negativeSounds.random());
-				if (gamepad->actionRight()) audio->playWavFile(neutralSounds.random());
-				if (gamepad->actionTop()) audio->playWavFile(positiveSounds.random());
+				if (gamepad->positiveSound()) audio->playWavFile(positiveSounds.random());
+				if (gamepad->neutralSound()) audio->playWavFile(neutralSounds.random());
+				if (gamepad->negativeSound()) audio->playWavFile(negativeSounds.random());
 			}
 		}
 
@@ -160,13 +150,13 @@ void R2CS::start()
 		{
 			LegDrive* drive = onTwoLegs ? static_cast<LegDrive*>(twoLegDrive) : static_cast<LegDrive*>(threeLegDrive);
 
-			drive->setInput(gamepad->joyLeftX(), gamepad->joyLeftY());
+			drive->setInput(gamepad->feetjoyX(), gamepad->feetJoyY());
 
 			// Dead-man switch
-			if (gamepad->shoulderLeftTop())
+			if (gamepad->deadMan())
 			{
 				// High speed select
-				if (gamepad->shoulderLeftBottom())
+				if (gamepad->highSpeedEnable())
 				{
 					// High speed - 40%
 					leftFoot->setMaxSpeed(0.4f);
@@ -193,10 +183,10 @@ void R2CS::start()
 		/*** Dome Drive Control ***/
 		if (gamepad->isConnected())
 		{
-			domeDrive->setInput(gamepad->joyRightX());
+			domeDrive->setInput(gamepad->domeJoyX());
 
 			// Dead-man switch
-			if (gamepad->shoulderLeftTop())
+			if (gamepad->deadMan())
 			{
 				// Full Speed - 95%
 				dome->setMaxSpeed(0.95f);

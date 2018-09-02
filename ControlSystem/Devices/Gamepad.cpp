@@ -26,8 +26,7 @@ Gamepad::~Gamepad()
 
 bool Gamepad::connect(bool withFF)
 {
-	if (connected) return true;
-
+	bool connected = false;
 	input_id = open(inputLocation.c_str(), O_NONBLOCK);
 	if (withFF) output_id = open(outputLocation.c_str(), O_RDWR);
 
@@ -50,8 +49,6 @@ bool Gamepad::connect(bool withFF)
 
 void Gamepad::disconnect()
 {
-	if (!connected) return;
-
 	if (input_id > 0) close(input_id);
 	if (output_id > 0) close(output_id);
 
@@ -59,14 +56,14 @@ void Gamepad::disconnect()
 	Logging::log(LOG_INFO, "GAMEPAD", "Disconnected");
 }
 
-void Gamepad::poll()
+bool Gamepad::poll()
 {
 	if (!File::fileExists(inputLocation))
 	{
 		close(input_id);
 		reset();
 		Logging::log(LOG_WARN, "GAMEPAD", "Lost connection");
-		return;
+		return false;
 	}
 
 	while(readEvent())
@@ -84,6 +81,8 @@ void Gamepad::poll()
 			Logging::log(LOG_DEBUG, "GAMEPAD", "Button: %d %d", inputEvent.index, inputEvent.value);
 		}
 	}
+
+	return true;
 }
 
 float Gamepad::getAxisValue(unsigned int index)
@@ -113,7 +112,6 @@ void Gamepad::initialise()
 
 void Gamepad::reset()
 {
-	connected = false;
 	input_id = -1;
 	output_id = -1;
 	axisValues.clear();

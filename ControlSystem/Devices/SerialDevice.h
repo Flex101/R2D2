@@ -22,7 +22,7 @@ public:
 
 	virtual bool connect();
 	virtual void disconnect();
-	virtual void poll();
+	virtual bool poll();
 
 	bool writeData(byte* data, unsigned int length);
 	int readData(byte* data);

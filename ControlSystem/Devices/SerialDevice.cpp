@@ -62,9 +62,9 @@ void SerialDevice::disconnect()
 	connected = false;
 }
 
-void SerialDevice::poll()
+bool SerialDevice::poll()
 {
-
+	return true;
 }
 
 bool SerialDevice::writeData(byte* data, unsigned int length)

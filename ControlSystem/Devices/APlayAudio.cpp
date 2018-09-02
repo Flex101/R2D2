@@ -35,10 +35,11 @@ void Audio::disconnect()
 	Logging::log(LOG_INFO, "AUDIO", "Disconnected");
 }
 
-void Audio::poll()
+bool Audio::poll()
 {
-	if (!connected) return;
+	if (!connected) return false;
 	playing = Process::isRunning("aplay");
+	return true;
 }
 
 bool Audio::playWavFile(std::string filename)
