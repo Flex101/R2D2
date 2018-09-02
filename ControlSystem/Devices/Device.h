@@ -8,7 +8,7 @@ class Device
 {
 public:
 	explicit Device();
-	virtual ~Device();
+	virtual ~Device() {}
 
 	virtual bool connect() = 0;
 	virtual bool reconnect();

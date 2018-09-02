@@ -1,5 +1,7 @@
 #include "Gamepad.h"
 
+#include "Tools/File.h"
+#include "Tools/Logging.h"
 #include <fcntl.h>				// for open()
 #include <unistd.h>				// for read() and close()
 #include <errno.h>				// for catching EAGAIN
@@ -7,8 +9,6 @@
 #include <linux/joystick.h>		// for JSIOCGAXES and JSIOCGBUTTONS
 #include <linux/input.h>		// for vibrate
 #include <string.h>				// for memset
-#include "File.h"
-#include "Logging.h"
 
 using namespace R2D2;
 using namespace R2D2::Devices;

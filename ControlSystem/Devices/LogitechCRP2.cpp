@@ -1,10 +1,10 @@
 #include "LogitechCRP2.h"
 
+#include "Tools/Logging.h"
 #include <stdlib.h>			// for malloc() and free()
 #include <unistd.h>			// for write()
 #include <linux/input.h>	// for ff_effect
 #include <string.h>			// for memset
-#include "Logging.h"
 
 using namespace R2D2;
 using namespace R2D2::Devices;

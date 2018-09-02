@@ -1,17 +1,12 @@
 #include "SerialDevice.h"
 
+#include "Tools/Logging.h"
 #include <fcntl.h>				// for open()
 #include <unistd.h>				// for read(), write() and close()
 #include <string.h>				// for memset()
-#include "Logging.h"
 
 using namespace R2D2;
 using namespace R2D2::Devices;
-
-SerialDevice::SerialDevice()
-{
-
-}
 
 SerialDevice::~SerialDevice()
 {

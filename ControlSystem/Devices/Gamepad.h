@@ -1,8 +1,8 @@
 #ifndef GAMEPAD_H
 #define GAMEPAD_H
 
-#include "Device.h"
-#include "CommonDefs.h"
+#include "Devices/Device.h"
+#include "Tools/CommonDefs.h"
 #include <string>
 #include <vector>
 

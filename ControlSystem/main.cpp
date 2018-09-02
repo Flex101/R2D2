@@ -1,7 +1,7 @@
 #include <iostream>
 #include "R2CS.h"
-#include "Logging.h"
-#include <csignal>		// for SIGINT
+#include "Tools/Logging.h"
+#include <csignal>				// for SIGINT
 
 using namespace std;
 using namespace R2D2;

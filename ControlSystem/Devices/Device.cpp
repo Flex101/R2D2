@@ -8,10 +8,6 @@ Device::Device()
 	connected = false;
 }
 
-Device::~Device()
-{
-}
-
 bool Device::reconnect()
 {
 	return connect();

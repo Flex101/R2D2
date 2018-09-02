@@ -1,9 +1,9 @@
 #ifndef SERIALDEVICE_H
 #define SERIALDEVICE_H
 
-#include "Device.h"
-#include "RealTime.h"	// for Timer;
-#include <termios.h>	// for POSIX terminal control definitions
+#include "Devices/Device.h"
+#include "Tools/RealTime.h"		// for Timer;
+#include <termios.h>			// for POSIX terminal control definitions
 #include <string>
 
 namespace R2D2 {
@@ -15,7 +15,7 @@ namespace Devices {
 class SerialDevice : public Device
 {
 public:
-	explicit SerialDevice();
+	explicit SerialDevice() {}
 	virtual ~SerialDevice();
 
 	void initialise(std::string path, unsigned int baudrate);

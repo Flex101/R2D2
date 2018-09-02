@@ -1,8 +1,8 @@
 #include "APlayAudio.h"
 
-#include "File.h"
-#include "Process.h"
-#include "Logging.h"
+#include "Tools/File.h"
+#include "Tools/Process.h"
+#include "Tools/Logging.h"
 
 using namespace R2D2;
 using namespace Devices;

@@ -1,7 +1,7 @@
 #include "ThreeLegDrive.h"
 
-#include "JoystickMix.h"
-#include "Logging.h"
+#include "Tools/JoystickMix.h"
+#include "Tools/Logging.h"
 
 using namespace R2D2;
 using namespace R2D2::Controllers;

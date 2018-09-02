@@ -7,9 +7,6 @@ CONFIG -= c++11
 DEFINES += NO_DEBUG
 
 INCLUDEPATH += \
-    Tools \
-    Devices \
-    Controllers \
 
 HEADERS += \
     R2CS.h \
@@ -33,7 +30,8 @@ HEADERS += \
     Controllers/DomeDrive.h \
     Controllers/LegDrive.h \
     Tools/JoystickMix.h \
-    Devices/Dome.h
+    Devices/Dome.h \
+    Devices/PS3Controller.h
 
 SOURCES += \
     main.cpp \
@@ -57,7 +55,8 @@ SOURCES += \
     Controllers/DomeDrive.cpp \
     Controllers/LegDrive.cpp \
     Tools/JoystickMix.cpp \
-    Devices/Dome.cpp
+    Devices/Dome.cpp \
+    Devices/PS3Controller.cpp
 
 OTHER_FILES += \
     Resources/Audio/Positive/*.wav \

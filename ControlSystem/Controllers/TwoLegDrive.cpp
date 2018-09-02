@@ -13,7 +13,7 @@ TwoLegDrive::~TwoLegDrive()
 
 }
 
-void TwoLegDrive::setInput(float x, float y)
+void TwoLegDrive::setInput(float /*x*/, float /*y*/)
 {
 
 }

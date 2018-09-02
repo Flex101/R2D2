@@ -1,10 +1,10 @@
 #include "FootDrive.h"
 
+#include "Tools/SerialDeviceLibrary.h"
+#include "Tools/Logging.h"
 #include <string.h>					// for memset()
 #include <stdio.h>					// for sprintf()
-#include "SerialDeviceLibrary.h"
-#include "Logging.h"
-#include "math.h"
+#include <math.h>
 
 using namespace R2D2;
 using namespace R2D2::Devices;

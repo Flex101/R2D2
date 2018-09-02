@@ -2,8 +2,8 @@
 #define R2CS_H
 
 #include <vector>
-#include "SerialDeviceLibrary.h"
-#include "AudioLibrary.h"
+#include "Tools/SerialDeviceLibrary.h"
+#include "Tools/AudioLibrary.h"
 
 namespace R2D2 {
 

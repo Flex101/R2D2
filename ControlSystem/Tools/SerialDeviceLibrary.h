@@ -3,7 +3,7 @@
 
 #include <map>
 #include <string>
-#include "SerialDevice.h"
+#include "Devices/SerialDevice.h"
 
 namespace R2D2 {
 
