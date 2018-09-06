@@ -24,7 +24,8 @@ bool LogitechCRP2::connect()
 {
 	if (connected) return true;
 
-	return Gamepad::connect();
+	connected = Gamepad::connect();
+	return connected;
 }
 
 void LogitechCRP2::disconnect()
@@ -36,6 +37,7 @@ void LogitechCRP2::disconnect()
 	writeVibrateEffect();
 
 	Gamepad::disconnect();
+	connected = false;
 }
 
 void LogitechCRP2::initialise()
