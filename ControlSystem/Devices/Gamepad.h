@@ -13,9 +13,11 @@ class Gamepad
 {
 
 public:
+	explicit Gamepad();
 	explicit Gamepad(std::string name);
 	virtual ~Gamepad();
 
+	void setDevicePath(std::string input, std::string output = "");
 	bool connect(bool withFF = false);
 	void disconnect();
 

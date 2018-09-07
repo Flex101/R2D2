@@ -13,6 +13,11 @@
 using namespace R2D2;
 using namespace R2D2::Devices;
 
+Gamepad::Gamepad()
+{
+	reset();
+}
+
 Gamepad::Gamepad(std::string name)
 {
 	inputLocation = "/dev/input/by-id/usb-" + name + "-joystick";
@@ -24,9 +29,19 @@ Gamepad::~Gamepad()
 {
 }
 
+void Gamepad::setDevicePath(std::string input, std::string output)
+{
+	inputLocation = input;
+	outputLocation = output;
+	reset();
+}
+
 bool Gamepad::connect(bool withFF)
 {
 	bool connected = false;
+
+	if (inputLocation.empty()) return false;
+
 	input_id = open(inputLocation.c_str(), O_NONBLOCK);
 	if (withFF) output_id = open(outputLocation.c_str(), O_RDWR);
 
