@@ -4,8 +4,6 @@
 #include "Logging.h"
 #include <fcntl.h>		// for open()
 #include <unistd.h>		// for read()
-#include <sstream>		// for std::istringstream
-#include <iterator>		// for std::istream_iterator
 
 using namespace R2D2;
 using namespace R2D2::Tools;
@@ -23,8 +21,8 @@ std::string DeviceInfoReader::joystickFromMac(std::string mac)
 		jt = (*it).find("Handlers");
 		if (jt == (*it).end()) continue;
 
-		std::istringstream iss(jt->second);
-		std::vector<std::string> handlers{std::istream_iterator<std::string>{iss},std::istream_iterator<std::string>{}};
+		std::vector<std::string> handlers;
+		StringEx::split(jt->second, ' ', handlers);
 
 		for (std::vector<std::string>::iterator kt = handlers.begin(); kt != handlers.end(); ++kt)
 		{
