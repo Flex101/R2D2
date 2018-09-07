@@ -21,6 +21,8 @@ public:
 
 	virtual bool poll();
 
+	virtual bool getButtonValue(unsigned int index);
+
 	/*** FRIENDLY MAPPINGS ***/
 
 	float joyLeftX()			{ return getAxisValue(0); }
@@ -28,13 +30,13 @@ public:
 	float joyRightX()			{ return getAxisValue(2); }
 	float joyRightY()			{ return getAxisValue(3); }
 
-	bool joyLeftPress()			{ return getButtonValue(10); }
-	bool joyRightPress()		{ return getButtonValue(11); }
+	bool joyLeftPress()			{ return getButtonValue(11); }
+	bool joyRightPress()		{ return getButtonValue(12); }
 
-	bool dPadLeft()				{ return (getAxisValue(4) < 0); }
-	bool dPadRight()			{ return (getAxisValue(4) > 0); }
-	bool dPadUp()				{ return (getAxisValue(5) < 0); }
-	bool dPadDown()				{ return (getAxisValue(5) > 0); }
+	bool dPadUp()				{ return getButtonValue(13); }
+	bool dPadDown()				{ return getButtonValue(14); }
+	bool dPadLeft()				{ return getButtonValue(15); }
+	bool dPadRight()			{ return getButtonValue(16); }
 
 	bool square()				{ return getButtonValue(3); }
 	bool circle()				{ return getButtonValue(1); }
@@ -42,12 +44,14 @@ public:
 	bool cross()				{ return getButtonValue(0); }
 
 	bool shoulderLeftTop()		{ return getButtonValue(4); }
-	bool shoulderLeftBottom()	{ return getButtonValue(6);}
+	bool shoulderLeftBottom()	{ return getButtonValue(6); }
 	bool shoulderRightTop()		{ return getButtonValue(5); }
 	bool shoulderRightBottom()	{ return getButtonValue(7); }
 
 	bool select()				{ return getButtonValue(8); }
 	bool start()				{ return getButtonValue(9); }
+
+	bool psButton()				{ return getButtonValue(10); }
 
 	/*** R2Controller Functions ***/
 
@@ -64,6 +68,7 @@ public:
 
 protected:
 	Tools::DeviceInfoReader devInfoReader;
+	unsigned int buttonRemap[17] = {14, 13, 12, 15, 10, 11, 8, 9, 0, 3, 16, 1, 2, 4, 6, 7, 5};
 };
 
 } // namespace Devices

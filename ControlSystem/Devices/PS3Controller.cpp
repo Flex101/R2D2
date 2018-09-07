@@ -42,3 +42,12 @@ bool PS3Controller::poll()
 	if (!success) disconnect();
 	return success;
 }
+
+bool PS3Controller::getButtonValue(unsigned int index)
+{
+	if (axisValues.size() > 6)	// Requires buttonRemap
+	{
+		return Gamepad::getButtonValue(buttonRemap[index]);
+	}
+	else return Gamepad::getButtonValue(index);
+}
