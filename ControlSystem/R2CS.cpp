@@ -118,6 +118,7 @@ void R2CS::start()
 	{
 		if (!leftFoot->isConnected()) leftFoot->reconnect();
 		if (!rightFoot->isConnected()) rightFoot->reconnect();
+		if (!dome->isConnected()) dome->reconnect();
 
 		if (footDrivesEnabled && (!leftFoot->isConnected() || !rightFoot->isConnected()))
 		{
@@ -190,26 +191,29 @@ void R2CS::start()
 		}
 
 		/*** Dome Drive Control ***/
-		if (gamepad->isConnected())
+		if (dome->isConnected())
 		{
-			domeDrive->setInput(gamepad->domeJoyX());
-
-			// Dead-man switch
-			if (gamepad->deadMan())
+			if (gamepad->isConnected())
 			{
-				// Full Speed - 95%
-				dome->setMaxSpeed(0.95f);
+				domeDrive->setInput(gamepad->domeJoyX());
+
+				// Dead-man switch
+				if (gamepad->deadMan())
+				{
+					// Full Speed - 95%
+					dome->setMaxSpeed(0.95f);
+				}
+				else
+				{
+					dome->setMaxSpeed(0.0f);
+				}
+
+				dome->setSpeed(domeDrive->getDomeSpeed());
 			}
 			else
 			{
-				dome->setMaxSpeed(0.0f);
+				dome->stop();
 			}
-
-			dome->setSpeed(domeDrive->getDomeSpeed());
-		}
-		else
-		{
-			dome->stop();
 		}
 
 		RealTime::sleepMilli(10);
