@@ -4,7 +4,7 @@ CONFIG -= app_bundle
 CONFIG -= qt
 CONFIG -= c++11
 
-DEFINES += NO_DEBUG
+#DEFINES += NO_DEBUG
 
 INCLUDEPATH += \
 
@@ -32,7 +32,8 @@ HEADERS += \
     Tools/JoystickMix.h \
     Devices/Dome.h \
     Devices/PS3Controller.h \
-    Devices/R2Controller.h
+    Devices/R2Controller.h \
+    Tools/DeviceInfo.h
 
 SOURCES += \
     main.cpp \
@@ -58,7 +59,8 @@ SOURCES += \
     Tools/JoystickMix.cpp \
     Devices/Dome.cpp \
     Devices/PS3Controller.cpp \
-    Devices/R2Controller.cpp
+    Devices/R2Controller.cpp \
+    Tools/DeviceInfo.cpp
 
 OTHER_FILES += \
     Resources/Audio/Positive/*.wav \

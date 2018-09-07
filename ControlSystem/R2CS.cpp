@@ -3,7 +3,7 @@
 #include "Controllers/DomeDrive.h"
 #include "Controllers/ThreeLegDrive.h"
 #include "Controllers/TwoLegDrive.h"
-#include "Devices/LogitechCRP2.h"
+#include "Devices/PS3Controller.h"
 #include "Devices/APlayAudio.h"
 #include "Devices/FootDrive.h"
 #include "Devices/Dome.h"
@@ -12,6 +12,7 @@
 #include "Tools/File.h"
 #include "Tools/RealTime.h"
 #include "Tools/Logging.h"
+#include "Tools/DeviceInfo.h"
 
 using namespace R2D2;
 using namespace R2D2::Devices;
@@ -19,7 +20,7 @@ using namespace R2D2::Controllers;
 
 R2CS::R2CS()
 {
-	gamepad = new LogitechCRP2();
+	gamepad = new PS3Controller("00:21:4f:12:b5:13");
 	audio = new Audio("cards.pcm.default");
 
 	devices.push_back(gamepad);
@@ -146,38 +147,46 @@ void R2CS::start()
 		}
 
 		/*** Foot Drive Control ***/
-		if (gamepad->isConnected() && footDrivesEnabled)
+		if (footDrivesEnabled)
 		{
-			LegDrive* drive = onTwoLegs ? static_cast<LegDrive*>(twoLegDrive) : static_cast<LegDrive*>(threeLegDrive);
-
-			drive->setInput(gamepad->feetjoyX(), gamepad->feetJoyY());
-
-			// Dead-man switch
-			if (gamepad->deadMan())
+			if (gamepad->isConnected())
 			{
-				// High speed select
-				if (gamepad->highSpeedEnable())
+				LegDrive* drive = onTwoLegs ? static_cast<LegDrive*>(twoLegDrive) : static_cast<LegDrive*>(threeLegDrive);
+
+				drive->setInput(gamepad->feetjoyX(), gamepad->feetJoyY());
+
+				// Dead-man switch
+				if (gamepad->deadMan())
 				{
-					// High speed - 40%
-					leftFoot->setMaxSpeed(0.4f);
-					rightFoot->setMaxSpeed(0.4f);
+					// High speed select
+					if (gamepad->highSpeedEnable())
+					{
+						// High speed - 40%
+						leftFoot->setMaxSpeed(0.4f);
+						rightFoot->setMaxSpeed(0.4f);
+					}
+					else
+					{
+						// Walking pace - 25%
+						leftFoot->setMaxSpeed(0.25f);
+						rightFoot->setMaxSpeed(0.25f);
+					}
 				}
 				else
 				{
-					// Walking pace - 25%
-					leftFoot->setMaxSpeed(0.25f);
-					rightFoot->setMaxSpeed(0.25f);
+					leftFoot->setMaxSpeed(0.0f);
+					rightFoot->setMaxSpeed(0.0f);
 				}
+
+
+				leftFoot->setSpeed(drive->getLeftFootSpeed());
+				rightFoot->setSpeed(drive->getRightFootSpeed());
 			}
 			else
 			{
-				leftFoot->setMaxSpeed(0.0f);
-				rightFoot->setMaxSpeed(0.0f);
+				leftFoot->stop();
+				rightFoot->stop();
 			}
-
-
-			leftFoot->setSpeed(drive->getLeftFootSpeed());
-			rightFoot->setSpeed(drive->getRightFootSpeed());
 		}
 
 		/*** Dome Drive Control ***/
@@ -197,6 +206,10 @@ void R2CS::start()
 			}
 
 			dome->setSpeed(domeDrive->getDomeSpeed());
+		}
+		else
+		{
+			dome->stop();
 		}
 
 		RealTime::sleepMilli(10);
