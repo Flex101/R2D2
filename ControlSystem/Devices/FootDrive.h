@@ -21,6 +21,7 @@ public:
 	void setReversed(bool reversed);
 	void setMaxSpeed(float value);
 	void setSpeed(float value);
+	void stop()											{ setSpeed(0); }
 
 protected:
 	bool commsCheck(unsigned int retryLimit = 3);
