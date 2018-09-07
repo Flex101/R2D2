@@ -68,7 +68,7 @@ public:
 
 protected:
 	Tools::DeviceInfoReader devInfoReader;
-	unsigned int buttonRemap[17] = {14, 13, 12, 15, 10, 11, 8, 9, 0, 3, 16, 1, 2, 4, 6, 7, 5};
+	static unsigned int buttonRemap[17];
 };
 
 } // namespace Devices

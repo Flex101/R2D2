@@ -5,6 +5,8 @@
 using namespace R2D2;
 using namespace R2D2::Devices;
 
+unsigned int PS3Controller::buttonRemap[17] = {14, 13, 12, 15, 10, 11, 8, 9, 0, 3, 16, 1, 2, 4, 6, 7, 5};
+
 PS3Controller::PS3Controller(std::string mac) : Gamepad()
 {
 	std::string devicePath = devInfoReader.joystickFromMac(mac);
