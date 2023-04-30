@@ -1,0 +1,180 @@
+[Version]
+Product,2
+File,19
+{
+"Config" : {
+  "NetImportFormat" : "Protel"
+},
+"Board" : {
+  "Width" : 37,
+  "Height" : 24,
+  "Pattern" : "Strip"
+},
+"CelledOutlines" : [
+  { "Name" : "6pin", "Locked" : true,
+    "Rows" : [
+    [{"Pin" : "1"}],
+    [{"Pin" : "2"}],
+    [{"Pin" : "3"}],
+    [{"Pin" : "4"}],
+    [{"Pin" : "5"}],
+    [{"Pin" : "6"}]
+    ]
+  },
+  { "Name" : "HighPower", "Locked" : true,
+    "Rows" : [
+    [{"Pin" : "PWR"},"Body"],
+    [{"Pin" : "PWR"},"Body"],
+    [{"Pin" : "GND"},"Body"],
+    [{"Pin" : "GND"},"Body"]
+    ]
+  },
+  { "Name" : "Power", "Locked" : true,
+    "Rows" : [
+    [{"Pin" : "PWR"}],
+    [{"Pin" : "GND"}]
+    ]
+  },
+  { "Name" : "Raspberry Pi Pico", "Locked" : true,
+    "Rows" : [
+    [{"Pin" : "GP0"},"Body","Body","Body","Body","Body","Body",{"Pin" : "VBUS"}],
+    [{"Pin" : "GP1"},"Body","Body","Body","Body","Body","Body",{"Pin" : "VSYS"}],
+    [{"Pin" : "GND"},"Body","Body","Body","Body","Body","Body",{"Pin" : "GND"}],
+    [{"Pin" : "GP2"},"Body","Body","Body","Body","Body","Body",{"Pin" : "3V3_EN"}],
+    [{"Pin" : "GP3"},"Body","Body","Body","Body","Body","Body",{"Pin" : "3V3"}],
+    [{"Pin" : "GP4"},"Body","Body","Body","Body","Body","Body",{"Pin" : "ADC_VREF"}],
+    [{"Pin" : "GP5"},"Body","Body","Body","Body","Body","Body",{"Pin" : "GP28"}],
+    [{"Pin" : "GND"},"Body","Body","Body","Body","Body","Body",{"Pin" : "GND"}],
+    [{"Pin" : "GP6"},"Body","Body","Body","Body","Body","Body",{"Pin" : "GP27"}],
+    [{"Pin" : "GP7"},"Body","Body","Body","Body","Body","Body",{"Pin" : "GP26"}],
+    [{"Pin" : "GP8"},"Body","Body","Body","Body","Body","Body",{"Pin" : "RUN"}],
+    [{"Pin" : "GP9"},"Body","Body","Body","Body","Body","Body",{"Pin" : "GP22"}],
+    [{"Pin" : "GND"},"Body","Body","Body","Body","Body","Body",{"Pin" : "GND"}],
+    [{"Pin" : "GP10"},"Body","Body","Body","Body","Body","Body",{"Pin" : "GP21"}],
+    [{"Pin" : "GP11"},"Body","Body","Body","Body","Body","Body",{"Pin" : "GP20"}],
+    [{"Pin" : "GP12"},"Body","Body","Body","Body","Body","Body",{"Pin" : "GP19"}],
+    [{"Pin" : "GP13"},"Body","Body","Body","Body","Body","Body",{"Pin" : "GP18"}],
+    [{"Pin" : "GND"},"Body","Body","Body","Body","Body","Body",{"Pin" : "GND"}],
+    [{"Pin" : "GP14"},"Body","Body","Body","Body","Body","Body",{"Pin" : "GP17"}],
+    [{"Pin" : "GP15"},"Body","Body","Body","Body","Body","Body",{"Pin" : "GP16"}]
+    ]
+  },
+  { "Name" : "ServoConnector", "Locked" : true,
+    "Rows" : [
+    [{"Pin" : "1"}],
+    [{"Pin" : "2"}],
+    [{"Pin" : "3"}]
+    ]
+  },
+  { "Name" : "8pin", "Locked" : false,
+    "Rows" : [
+    [{"Pin" : "1"}],
+    [{"Pin" : "2"}],
+    [{"Pin" : "3"}],
+    [{"Pin" : "4"}],
+    [{"Pin" : "5"}],
+    [{"Pin" : "6"}],
+    [{"Pin" : "7"}],
+    [{"Pin" : "8"}]
+    ]
+  }
+],
+"LeadedOutlines" : [
+],
+"RadialOutlines" : [
+],
+"CustomOutlines" : [
+],
+"SmdOutlines" : [
+],
+"Components" : [
+  { "Designator" : "Pico", "Value" : "", "Outline" : "Raspberry Pi Pico",
+  "X1000" : 9000, "Y1000" : 2000, "EndDeltaX" : 0, "EndDeltaY" : 1,
+  "Text" : { "X" : 1, "Y" : -1, "Angle" : 0, "Visible" : true },
+  "Group" : 0
+  },
+  { "Designator" : "PieConnOut", "Value" : "", "Outline" : "6pin",
+  "X1000" : 5000, "Y1000" : 14000, "EndDeltaX" : 0, "EndDeltaY" : 1,
+  "Text" : { "X" : -2, "Y" : -1, "Angle" : 0, "Visible" : true },
+  "Group" : 0
+  },
+  { "Designator" : "PwrConn", "Value" : "", "Outline" : "HighPower",
+  "X1000" : 20000, "Y1000" : 2000, "EndDeltaX" : 0, "EndDeltaY" : 1,
+  "Text" : { "X" : 1, "Y" : -1, "Angle" : 0, "Visible" : true },
+  "Group" : 0
+  },
+  { "Designator" : "RimConnOut", "Value" : "", "Outline" : "8pin",
+  "X1000" : 20000, "Y1000" : 12000, "EndDeltaX" : 0, "EndDeltaY" : 1,
+  "Text" : { "X" : 2, "Y" : -1, "Angle" : 0, "Visible" : true },
+  "Group" : 0
+  }
+],
+"Links" : [
+  { "X" : 18, "Y" : 1, "EndDeltaX" : 0, "EndDeltaY" : 1, "Group" : 0 },
+  { "X" : 7, "Y" : 1, "EndDeltaX" : 0, "EndDeltaY" : 13, "Group" : 0 },
+  { "X" : 19, "Y" : 2, "EndDeltaX" : 0, "EndDeltaY" : 10, "Group" : 0 },
+  { "X" : 18, "Y" : 5, "EndDeltaX" : 0, "EndDeltaY" : 14, "Group" : 0 },
+  { "X" : 19, "Y" : 14, "EndDeltaX" : 0, "EndDeltaY" : 6, "Group" : 0 }
+],
+"Breaks" : [
+  { "X" : 17, "Y" : 5, "Shift" : "none", "Group" : 0 },
+  { "X" : 17, "Y" : 14, "Shift" : "none", "Group" : 0 },
+  { "X" : 12, "Y" : 9, "Shift" : "none", "Group" : 0 },
+  { "X" : 12, "Y" : 10, "Shift" : "none", "Group" : 0 },
+  { "X" : 8, "Y" : 14, "Shift" : "none", "Group" : 0 },
+  { "X" : 12, "Y" : 16, "Shift" : "none", "Group" : 0 },
+  { "X" : 12, "Y" : 4, "Shift" : "none", "Group" : 0 },
+  { "X" : 12, "Y" : 12, "Shift" : "none", "Group" : 0 },
+  { "X" : 12, "Y" : 20, "Shift" : "none", "Group" : 0 },
+  { "X" : 12, "Y" : 18, "Shift" : "none", "Group" : 0 },
+  { "X" : 12, "Y" : 17, "Shift" : "none", "Group" : 0 },
+  { "X" : 12, "Y" : 15, "Shift" : "none", "Group" : 0 },
+  { "X" : 12, "Y" : 21, "Shift" : "none", "Group" : 0 },
+  { "X" : 12, "Y" : 14, "Shift" : "none", "Group" : 0 },
+  { "X" : 12, "Y" : 11, "Shift" : "none", "Group" : 0 },
+  { "X" : 12, "Y" : 13, "Shift" : "none", "Group" : 0 },
+  { "X" : 12, "Y" : 6, "Shift" : "none", "Group" : 0 },
+  { "X" : 12, "Y" : 8, "Shift" : "none", "Group" : 0 },
+  { "X" : 17, "Y" : 2, "Shift" : "none", "Group" : 0 },
+  { "X" : 12, "Y" : 3, "Shift" : "none", "Group" : 0 },
+  { "X" : 12, "Y" : 2, "Shift" : "none", "Group" : 0 },
+  { "X" : 12, "Y" : 7, "Shift" : "none", "Group" : 0 },
+  { "X" : 12, "Y" : 5, "Shift" : "none", "Group" : 0 },
+  { "X" : 17, "Y" : 12, "Shift" : "none", "Group" : 0 }
+],
+"Wires" : [
+],
+"Text" : [
+    { "Value" : "PWM_A2", "X" : 22, "Y" : 16, "Angle" : 0, "Size" : "Small", "Group" : 0 },
+    { "Value" : "GND", "X" : 23, "Y" : 4, "Angle" : 0, "Size" : "Small", "Group" : 0 },
+    { "Value" : "PWR", "X" : 23, "Y" : 2, "Angle" : 0, "Size" : "Small", "Group" : 0 },
+    { "Value" : "GND", "X" : 23, "Y" : 5, "Angle" : 0, "Size" : "Small", "Group" : 0 },
+    { "Value" : "PWM_B2", "X" : 22, "Y" : 15, "Angle" : 0, "Size" : "Small", "Group" : 0 },
+    { "Value" : "GND", "X" : 22, "Y" : 19, "Angle" : 0, "Size" : "Small", "Group" : 0 },
+    { "Value" : "PWM_B1", "X" : 22, "Y" : 17, "Angle" : 0, "Size" : "Small", "Group" : 0 },
+    { "Value" : "PWM_A5", "X" : 3, "Y" : 15, "Angle" : 0, "Size" : "Small", "Group" : 0 },
+    { "Value" : "PWR", "X" : 22, "Y" : 12, "Angle" : 0, "Size" : "Small", "Group" : 0 },
+    { "Value" : "PWM_B5", "X" : 3, "Y" : 16, "Angle" : 0, "Size" : "Small", "Group" : 0 },
+    { "Value" : "PWR", "X" : 3, "Y" : 14, "Angle" : 0, "Size" : "Small", "Group" : 0 },
+    { "Value" : "PWM_A6", "X" : 3, "Y" : 17, "Angle" : 0, "Size" : "Small", "Group" : 0 },
+    { "Value" : "PWM_A1", "X" : 22, "Y" : 18, "Angle" : 0, "Size" : "Small", "Group" : 0 },
+    { "Value" : "GND", "X" : 3, "Y" : 19, "Angle" : 0, "Size" : "Small", "Group" : 0 },
+    { "Value" : "PWR", "X" : 23, "Y" : 3, "Angle" : 0, "Size" : "Small", "Group" : 0 },
+    { "Value" : "PWM_B6", "X" : 3, "Y" : 18, "Angle" : 0, "Size" : "Small", "Group" : 0 },
+    { "Value" : "PWM_A3", "X" : 22, "Y" : 13, "Angle" : 0, "Size" : "Small", "Group" : 0 },
+    { "Value" : "PWM_B0", "X" : 22, "Y" : 14, "Angle" : 0, "Size" : "Small", "Group" : 0 }
+],
+"Nets" : [
+],
+"NetColors" : [
+    { "Node" : "" },
+    { "Node" : "" },
+    { "Node" : "" },
+    { "Node" : "" },
+    { "Node" : "" },
+    { "Node" : "" }
+],
+"Notes" : {
+  "Lines" : ""
+}
+}
